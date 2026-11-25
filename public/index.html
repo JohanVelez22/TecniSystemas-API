@@ -1,43 +1,99 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TecniSystemas — Gestión de Turnos (API REST)</title>
+  <title>TecniSystemas — Panel API REST</title>
   <style>
-    :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-soft: #f1f5f9;
-      --border: #e2e8f0;
-      --border-strong: #cbd5e1;
-      --text: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #64748b;
+    /* =====================================================================
+       SISTEMA DE TEMAS (CLARO / OSCURO) — CONTRASTE SUAVE Y DESCANSO VISUAL
+       ===================================================================== */
+    :root,
+    [data-theme="light"] {
+      --bg-grad: linear-gradient(135deg, #edf2f7 0%, #e3eaf4 55%, #e8eef7 100%);
+      --topbar-grad: linear-gradient(90deg, #1b2842 0%, #243656 100%);
+      --card-grad: linear-gradient(160deg, #ffffff 0%, #f5f8fc 100%);
+      --card-sub-grad: linear-gradient(160deg, #f6f9fd 0%, #edf2f8 100%);
+      --input-grad: linear-gradient(180deg, #f7f9fc 0%, #ffffff 100%);
+      --code-bg: linear-gradient(180deg, #f1f5fa 0%, #e9eff7 100%);
+      --code-text: #1e293b;
 
-      /* Sistema semántico de colores */
-      --blue: #2563eb;
-      --blue-hover: #1d4ed8;
-      --blue-soft: #eff6ff;
-      --blue-border: #bfdbfe;
+      --border: #d8e2ee;
+      --border-strong: #c2d0e2;
+      --text: #182436;
+      --text-secondary: #4a5b73;
+      --text-muted: #697b94;
+      --shadow: 0 2px 6px rgba(24, 36, 54, 0.05), 0 8px 20px rgba(24, 36, 54, 0.04);
 
-      --green: #059669;
-      --green-hover: #047857;
-      --green-soft: #ecfdf5;
-      --green-border: #a7f3d0;
+      /* Colores semánticos (fáciles de distinguir sin fatiga visual) */
+      --blue: #2b6cb0;
+      --blue-hover: #215794;
+      --blue-grad: linear-gradient(135deg, #3178c6 0%, #245ea1 100%);
+      --blue-soft: #ebf3fc;
+      --blue-border: #bfd6f4;
 
-      --amber: #d97706;
-      --amber-soft: #fffbeb;
-      --amber-border: #fde68a;
+      --green: #16805c;
+      --green-hover: #11684a;
+      --green-grad: linear-gradient(135deg, #1b936a 0%, #147453 100%);
+      --green-soft: #eaf7f1;
+      --green-border: #b3e2ce;
 
-      --red: #dc2626;
-      --red-hover: #b91c1c;
-      --red-soft: #fef2f2;
-      --red-border: #fecaca;
+      --amber: #b86e0c;
+      --amber-soft: linear-gradient(135deg, #fef9eb 0%, #fdf2d6 100%);
+      --amber-border: #efd291;
+      --amber-pill: #d28114;
 
-      --radius: 14px;
-      --radius-sm: 9px;
-      --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.04);
+      --red: #c23b3b;
+      --red-soft: linear-gradient(135deg, #fdf2f2 0%, #fbe6e6 100%);
+      --red-soft-hover: linear-gradient(135deg, #fbe5e5 0%, #f8d6d6 100%);
+      --red-border: #f0bcbc;
+      --red-text: #8f2424;
+
+      --btn-neutral-bg: linear-gradient(180deg, #ffffff 0%, #f1f5fa 100%);
+      --btn-neutral-hover: linear-gradient(180deg, #f1f5fa 0%, #e4ebf4 100%);
+    }
+
+    [data-theme="dark"] {
+      --bg-grad: linear-gradient(135deg, #121a28 0%, #172234 55%, #131d2d 100%);
+      --topbar-grad: linear-gradient(90deg, #0e1522 0%, #172338 100%);
+      --card-grad: linear-gradient(160deg, #1e2a3d 0%, #182233 100%);
+      --card-sub-grad: linear-gradient(160deg, #192436 0%, #141d2c 100%);
+      --input-grad: linear-gradient(180deg, #131c2b 0%, #192437 100%);
+      --code-bg: linear-gradient(180deg, #101826 0%, #0d1420 100%);
+      --code-text: #d6e4f5;
+
+      --border: #2c3b52;
+      --border-strong: #3b4e6b;
+      --text: #e6edf7;
+      --text-secondary: #aebdd3;
+      --text-muted: #8496b2;
+      --shadow: 0 2px 8px rgba(4, 9, 18, 0.35), 0 10px 24px rgba(4, 9, 18, 0.25);
+
+      --blue: #5b9cf0;
+      --blue-hover: #4789e0;
+      --blue-grad: linear-gradient(135deg, #3b82d6 0%, #2b6cb8 100%);
+      --blue-soft: rgba(91, 156, 240, 0.14);
+      --blue-border: rgba(91, 156, 240, 0.35);
+
+      --green: #38b889;
+      --green-hover: #2da176;
+      --green-grad: linear-gradient(135deg, #259c72 0%, #1c7d5b 100%);
+      --green-soft: rgba(56, 184, 137, 0.14);
+      --green-border: rgba(56, 184, 137, 0.35);
+
+      --amber: #eab04a;
+      --amber-soft: linear-gradient(135deg, rgba(234, 176, 74, 0.16) 0%, rgba(210, 145, 42, 0.1) 100%);
+      --amber-border: rgba(234, 176, 74, 0.42);
+      --amber-pill: #d49022;
+
+      --red: #e56b6b;
+      --red-soft: linear-gradient(135deg, rgba(229, 107, 107, 0.15) 0%, rgba(196, 75, 75, 0.1) 100%);
+      --red-soft-hover: linear-gradient(135deg, rgba(229, 107, 107, 0.24) 0%, rgba(196, 75, 75, 0.17) 100%);
+      --red-border: rgba(229, 107, 107, 0.38);
+      --red-text: #f6b2b2;
+
+      --btn-neutral-bg: linear-gradient(180deg, #24334a 0%, #1c283b 100%);
+      --btn-neutral-hover: linear-gradient(180deg, #2d3f5b 0%, #24334a 100%);
     }
 
     * {
@@ -48,229 +104,245 @@
 
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
+      background: var(--bg-grad);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.4;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    /* Barra superior */
+    /* Barra superior compacta */
     .topbar {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 18px 24px;
-      border-bottom: 1px solid #1e293b;
+      background: var(--topbar-grad);
+      color: #f1f5f9;
+      padding: 10px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .topbar-inner {
-      max-width: 1160px;
+      max-width: 1420px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 10px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: var(--blue);
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: var(--blue-grad);
       display: grid;
       place-items: center;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.92rem;
       color: #fff;
-      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
     }
 
     .brand h1 {
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
+      line-height: 1.2;
     }
 
     .brand p {
-      font-size: 0.85rem;
-      color: #94a3b8;
+      font-size: 0.76rem;
+      color: #a9bbd4;
     }
 
-    .server-pill {
+    .topbar-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-chip {
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #e2ecf8;
+    }
+
+    .meta-chip.live {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(16, 185, 129, 0.14);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #6ee7b7;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 600;
+      gap: 6px;
+      background: rgba(56, 184, 137, 0.16);
+      border-color: rgba(56, 184, 137, 0.38);
+      color: #8ee6c5;
     }
 
     .dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: #10b981;
+      background: #38b889;
     }
 
-    .container {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 22px 16px 48px;
-    }
-
-    /* Tarjetas de resumen superior */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    @media (max-width: 720px) {
-      .stats-bar {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .stat-label {
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
       font-size: 0.78rem;
-      color: var(--text-muted);
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      cursor: pointer;
+      transition: background 0.15s;
     }
 
-    .stat-value {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-top: 2px;
-      color: var(--text);
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.22);
     }
 
-    .stat-sub {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-top: 2px;
+    /* Contenedor principal pensado para caber en 1 pantalla */
+    .workspace {
+      max-width: 1420px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 12px 16px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    /* Banner de resultado en lenguaje humano */
-    .feedback-banner {
+    /* Banner compacto de feedback humano */
+    .feedback-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
-      padding: 14px 18px;
-      border-radius: var(--radius);
+      padding: 9px 14px;
+      border-radius: 11px;
+      background: var(--card-grad);
       border: 1px solid var(--border);
-      background: var(--surface);
-      margin-bottom: 20px;
       box-shadow: var(--shadow);
+      font-size: 0.85rem;
     }
 
-    .feedback-banner.ok {
+    .feedback-bar.ok {
       background: var(--green-soft);
       border-color: var(--green-border);
-      color: #065f46;
+      color: var(--green);
     }
 
-    .feedback-banner.err {
+    .feedback-bar.err {
       background: var(--red-soft);
       border-color: var(--red-border);
-      color: #991b1b;
-    }
-
-    .feedback-text {
-      font-size: 0.93rem;
-      font-weight: 500;
+      color: var(--red-text);
     }
 
     .http-badge {
-      font-size: 0.78rem;
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 0.74rem;
       font-weight: 700;
-      padding: 5px 11px;
+      padding: 3px 10px;
       border-radius: 999px;
-      background: var(--surface-soft);
-      color: var(--text-secondary);
+      background: var(--card-sub-grad);
       border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
       white-space: nowrap;
     }
 
     .http-badge.ok {
-      background: #ffffff;
-      color: var(--green);
-      border-color: var(--green-border);
+      background: var(--green-grad);
+      border-color: transparent;
+      color: #ffffff;
     }
 
     .http-badge.err {
-      background: #ffffff;
-      color: var(--red);
-      border-color: var(--red-border);
+      background: var(--red);
+      border-color: transparent;
+      color: #ffffff;
     }
 
-    /* Layout principal */
-    .main-grid {
+    /* Grid de 3 columnas para ver TODO al mismo tiempo */
+    .bento-grid {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 20px;
-      align-items: start;
+      grid-template-columns: 1.05fr 0.95fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+      flex: 1;
     }
 
-    @media (max-width: 920px) {
-      .main-grid {
+    @media (max-width: 1120px) {
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .bento-grid {
         grid-template-columns: 1fr;
       }
     }
 
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    /* Tarjetas con degradado sutil */
     .card {
-      background: var(--surface);
+      background: var(--card-grad);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 20px;
+      border-radius: 13px;
+      padding: 14px 15px;
       box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card.grow {
+      flex: 1;
     }
 
     .card-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 16px;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
     }
 
     .step-title {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .step-num {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-size: 0.78rem;
+      font-weight: 800;
       flex-shrink: 0;
     }
 
@@ -279,22 +351,16 @@
     .step-num.red { background: var(--red-soft); color: var(--red); border: 1px solid var(--red-border); }
 
     .card-header h2 {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--text);
     }
 
-    .card-desc {
-      font-size: 0.84rem;
-      color: var(--text-secondary);
-      margin-top: 2px;
-    }
-
     .endpoint-chip {
       font-family: 'Cascadia Code', Consolas, monospace;
-      font-size: 0.74rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      padding: 4px 9px;
+      padding: 3px 7px;
       border-radius: 6px;
       white-space: nowrap;
     }
@@ -302,48 +368,42 @@
     .endpoint-chip.post { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
     .endpoint-chip.get { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
 
-    /* Barra de ejemplos rápidos */
+    /* Barra de ejemplos */
     .quick-bar {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
-      padding: 10px 12px;
-      background: var(--surface-soft);
-      border-radius: var(--radius-sm);
-      margin-bottom: 16px;
+      gap: 6px;
+      padding: 7px 9px;
+      background: var(--card-sub-grad);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      margin-bottom: 10px;
     }
 
     .quick-label {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-right: 4px;
     }
 
-    /* Formulario */
+    /* Formulario compacto con inputs degradados */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 9px;
     }
 
     .full {
       grid-column: 1 / -1;
     }
 
-    @media (max-width: 560px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     label.field-label {
       display: block;
-      font-size: 0.83rem;
+      font-size: 0.76rem;
       font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 5px;
+      margin-bottom: 3px;
     }
 
     input[type="text"],
@@ -351,12 +411,12 @@
     input[type="datetime-local"],
     textarea {
       width: 100%;
-      background: #ffffff;
+      background: var(--input-grad);
       border: 1px solid var(--border-strong);
       color: var(--text);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      font-size: 0.92rem;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
       font-family: inherit;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
@@ -365,24 +425,24 @@
     input:focus,
     textarea:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      box-shadow: 0 0 0 3px var(--blue-soft);
     }
 
     textarea {
-      resize: vertical;
-      min-height: 62px;
+      resize: none;
+      height: 48px;
     }
 
-    /* Tarjeta de prioridad */
+    /* Caja de prioridad con degradado ámbar */
     .priority-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
+      gap: 10px;
+      padding: 8px 11px;
+      border-radius: 9px;
       border: 1px solid var(--border-strong);
-      background: var(--surface-soft);
+      background: var(--card-sub-grad);
       cursor: pointer;
       transition: all 0.15s;
     }
@@ -395,77 +455,73 @@
     .priority-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .priority-left input {
-      width: 19px;
-      height: 19px;
-      accent-color: var(--amber);
+      width: 17px;
+      height: 17px;
+      accent-color: var(--amber-pill);
       cursor: pointer;
     }
 
     .priority-title {
-      font-size: 0.9rem;
+      font-size: 0.83rem;
       font-weight: 600;
-      color: var(--text);
     }
 
     .priority-sub {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       color: var(--text-secondary);
     }
 
     .priority-pill {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 3px 9px;
       border-radius: 999px;
-      background: #ffffff;
+      background: var(--card-grad);
       border: 1px solid var(--border-strong);
       color: var(--text-secondary);
     }
 
     .priority-box.active .priority-pill {
-      background: var(--amber);
-      border-color: var(--amber);
+      background: var(--amber-pill);
+      border-color: transparent;
       color: #ffffff;
     }
 
-    /* Resumen de cálculo */
+    /* Desglose compacto */
     .calc-summary {
-      background: var(--surface-soft);
+      background: var(--card-sub-grad);
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 0.86rem;
-    }
-
-    .calc-row {
+      border-radius: 9px;
+      padding: 8px 11px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+
+    .calc-detail {
       color: var(--text-secondary);
     }
 
-    .calc-row.total {
-      border-top: 1px solid var(--border-strong);
-      margin-top: 4px;
-      padding-top: 6px;
-      font-size: 1rem;
-      font-weight: 700;
+    .calc-total {
+      font-size: 0.96rem;
+      font-weight: 800;
       color: var(--green);
     }
 
-    /* Botones con jerarquía clara */
+    /* Botones semánticos */
     button {
       font-family: inherit;
       font-weight: 600;
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, transform 0.06s;
+      transition: filter 0.15s, transform 0.06s, background 0.15s;
     }
 
     button:active {
@@ -474,80 +530,40 @@
 
     .btn-primary-blue {
       width: 100%;
-      padding: 12px 16px;
-      font-size: 0.95rem;
-      background: var(--blue);
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      background: var(--blue-grad);
       color: #ffffff;
-      border: 1px solid var(--blue);
-      margin-top: 14px;
+      border: none;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px rgba(43, 108, 176, 0.25);
     }
 
-    .btn-primary-blue:hover { background: var(--blue-hover); }
+    .btn-primary-blue:hover { filter: brightness(1.06); }
 
     .btn-primary-green {
-      padding: 10px 16px;
-      font-size: 0.9rem;
-      background: var(--green);
+      padding: 8px 13px;
+      font-size: 0.84rem;
+      background: var(--green-grad);
       color: #ffffff;
-      border: 1px solid var(--green);
+      border: none;
       white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(22, 128, 92, 0.22);
     }
 
-    .btn-primary-green:hover { background: var(--green-hover); }
+    .btn-primary-green:hover { filter: brightness(1.06); }
 
     .btn-neutral {
-      padding: 6px 11px;
-      font-size: 0.8rem;
-      background: #ffffff;
+      padding: 5px 9px;
+      font-size: 0.75rem;
+      background: var(--btn-neutral-bg);
       color: var(--text-secondary);
       border: 1px solid var(--border-strong);
     }
 
     .btn-neutral:hover {
-      background: #e2e8f0;
+      background: var(--btn-neutral-hover);
       color: var(--text);
-    }
-
-    .btn-error-test {
-      width: 100%;
-      text-align: left;
-      padding: 10px 12px;
-      background: var(--red-soft);
-      border: 1px solid var(--red-border);
-      color: #991b1b;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-error-test:hover {
-      background: #fee2e2;
-      border-color: #fca5a5;
-    }
-
-    .btn-error-test small {
-      display: block;
-      font-weight: 400;
-      color: #7f1d1d;
-      font-size: 0.78rem;
-    }
-
-    .error-tag {
-      font-family: 'Cascadia Code', Consolas, monospace;
-      font-size: 0.75rem;
-      font-weight: 700;
-      background: var(--red);
-      color: #ffffff;
-      padding: 3px 8px;
-      border-radius: 6px;
-      flex-shrink: 0;
-    }
-
-    .error-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
     }
 
     /* Buscador por ID */
@@ -556,144 +572,176 @@
       gap: 8px;
     }
 
-    /* Lista de turnos */
+    /* Lista de turnos con scroll interno */
     .turnos-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      max-height: 390px;
+      gap: 8px;
+      max-height: 360px;
       overflow-y: auto;
+      padding-right: 2px;
     }
 
     .turno-card {
+      background: var(--card-sub-grad);
       border: 1px solid var(--border);
-      background: var(--bg);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
+      border-radius: 9px;
+      padding: 9px 11px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .turno-info {
+      min-width: 0;
     }
 
     .turno-info h4 {
-      font-size: 0.94rem;
+      font-size: 0.86rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 5px;
     }
 
     .turno-info p {
-      font-size: 0.82rem;
+      font-size: 0.76rem;
       color: var(--text-secondary);
       margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 240px;
     }
 
     .id-badge {
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       font-weight: 700;
       background: var(--blue-soft);
       color: var(--blue);
-      padding: 2px 7px;
-      border-radius: 6px;
+      padding: 1px 6px;
+      border-radius: 5px;
     }
 
     .prio-badge {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 1px 7px;
       border-radius: 999px;
     }
 
-    .prio-badge.si { background: var(--amber-soft); color: #b45309; border: 1px solid var(--amber-border); }
-    .prio-badge.no { background: var(--surface-soft); color: var(--text-secondary); border: 1px solid var(--border-strong); }
+    .prio-badge.si { background: var(--amber-soft); color: var(--amber); border: 1px solid var(--amber-border); }
+    .prio-badge.no { background: var(--card-grad); color: var(--text-muted); border: 1px solid var(--border-strong); }
 
     .turno-right {
       text-align: right;
+      flex-shrink: 0;
     }
 
     .turno-total {
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 800;
       color: var(--green);
     }
 
     .turno-base {
-      font-size: 0.76rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      padding: 28px 16px;
+      padding: 24px 12px;
       border: 1px dashed var(--border-strong);
-      border-radius: var(--radius-sm);
-      font-size: 0.88rem;
+      border-radius: 9px;
+      font-size: 0.82rem;
     }
 
-    /* Inspector técnico plegable / claro */
-    details.inspector-card {
-      background: #0f172a;
-      color: #e2e8f0;
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      border: 1px solid #1e293b;
-      box-shadow: var(--shadow);
-    }
-
-    details.inspector-card summary {
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.94rem;
+    /* Inspector HTTP en columna 3 (siempre visible sin bajar) */
+    .inspector-tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      list-style: none;
+      gap: 6px;
+      margin-bottom: 8px;
     }
 
-    details.inspector-card summary::-webkit-details-marker {
-      display: none;
+    .tab-btn {
+      flex: 1;
+      padding: 6px 8px;
+      font-size: 0.76rem;
+      background: var(--card-sub-grad);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-strong);
     }
 
-    .inspector-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    @media (max-width: 780px) {
-      .inspector-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .inspector-col-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #94a3b8;
-      margin-bottom: 6px;
-      font-weight: 600;
+    .tab-btn.active {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-color: var(--blue-border);
     }
 
     pre {
-      background: #020617;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 12px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 11px;
       font-family: 'Cascadia Code', Consolas, monospace;
-      font-size: 0.8rem;
-      color: #e2e8f0;
-      overflow-x: auto;
-      max-height: 240px;
+      font-size: 0.76rem;
+      color: var(--code-text);
+      overflow: auto;
+      height: 225px;
       white-space: pre-wrap;
       word-break: break-word;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Simulador de errores compacto */
+    .error-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .btn-error-test {
+      width: 100%;
+      text-align: left;
+      padding: 8px 10px;
+      background: var(--red-soft);
+      border: 1px solid var(--red-border);
+      color: var(--red-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .btn-error-test:hover {
+      background: var(--red-soft-hover);
+    }
+
+    .btn-error-test small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.72rem;
+      opacity: 0.85;
+    }
+
+    .error-tag {
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: var(--red);
+      color: #ffffff;
+      padding: 2px 7px;
+      border-radius: 5px;
+      flex-shrink: 0;
     }
   </style>
 </head>
@@ -704,62 +752,46 @@
         <div class="brand-icon">TS</div>
         <div>
           <h1>TecniSystemas · Gestión de Turnos</h1>
-          <p>Servicio técnico de computadores · Taller Arquitectura Cliente-Servidor (CIAF)</p>
+          <p>API REST por Capas · Grupo miércoles · Combariza (#4)</p>
         </div>
       </div>
-      <div class="server-pill">
-        <span class="dot"></span>
-        API activa en localhost:3000
+
+      <div class="topbar-meta">
+        <span class="meta-chip">N = 4 · Recargo 8%</span>
+        <span class="meta-chip">Turnos: <strong id="statTotalTurnos">0</strong></span>
+        <span class="meta-chip live"><span class="dot"></span>localhost:3000</span>
+        <button type="button" class="theme-toggle" id="btnTheme" title="Cambiar entre tema claro y oscuro">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Tema oscuro</span>
+        </button>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <!-- Resumen rápido -->
-    <section class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-label">Turnos registrados</div>
-        <div class="stat-value" id="statTotalTurnos">0</div>
-        <div class="stat-sub">Guardados en data/turnos.json</div>
+  <main class="workspace">
+    <!-- Resumen humano en una línea -->
+    <section id="feedbackBar" class="feedback-bar">
+      <div id="feedbackText">
+        Listo para probar: usa el <strong>Paso 1</strong> para crear un turno, el <strong>Paso 2</strong> para buscar por ID o el <strong>Simulador</strong> para probar errores.
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Regla oficial del equipo</div>
-        <div class="stat-value">N = 4 · Recargo 8%</div>
-        <div class="stat-sub">Grupo miércoles · Combariza Garcia (#4)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Última operación</div>
-        <div class="stat-value" id="statUltimaOp">Lista cargada</div>
-        <div class="stat-sub" id="statUltimoCodigo">HTTP 200 OK</div>
-      </div>
+      <span id="feedbackBadge" class="http-badge">HTTP 200 OK</span>
     </section>
 
-    <!-- Mensaje claro en español sobre lo último que ocurrió -->
-    <section id="feedbackBanner" class="feedback-banner">
-      <div class="feedback-text" id="feedbackText">
-        Bienvenido. Sigue el <strong>Paso 1</strong> para registrar un turno, o usa los ejemplos rápidos para probar al instante.
-      </div>
-      <span id="feedbackBadge" class="http-badge">Listo</span>
-    </section>
-
-    <div class="main-grid">
-      <!-- COLUMNA IZQUIERDA: CREAR Y BUSCAR -->
-      <div>
-        <!-- PASO 1: CREAR TURNO -->
-        <section class="card">
+    <!-- Dashboard 3 columnas: todo a la vista -->
+    <div class="bento-grid">
+      <!-- COLUMNA 1: CREAR TURNO -->
+      <div class="col">
+        <section class="card grow">
           <div class="card-header">
             <div class="step-title">
               <span class="step-num blue">1</span>
-              <div>
-                <h2>Registrar nuevo turno</h2>
-                <p class="card-desc">Completa los datos del cliente y del servicio.</p>
-              </div>
+              <h2>Registrar nuevo turno</h2>
             </div>
             <span class="endpoint-chip post">POST /api/turnos</span>
           </div>
 
           <div class="quick-bar">
-            <span class="quick-label">Rellenar ejemplo:</span>
+            <span class="quick-label">Ejemplos:</span>
             <button type="button" class="btn-neutral" id="btnEjemploPrioritario">Prioritario ($100.000)</button>
             <button type="button" class="btn-neutral" id="btnEjemploNormal">Normal ($80.000)</button>
             <button type="button" class="btn-neutral" id="btnLimpiar">Limpiar</button>
@@ -785,7 +817,7 @@
               </div>
 
               <div>
-                <label class="field-label" for="fechaHora">Fecha y hora de atención *</label>
+                <label class="field-label" for="fechaHora">Fecha y hora *</label>
                 <input id="fechaHora" type="datetime-local" required />
               </div>
 
@@ -795,8 +827,8 @@
               </div>
 
               <div class="full">
-                <label class="field-label" for="descripcion">Descripción del problema (opcional)</label>
-                <textarea id="descripcion" placeholder="Ej. El portátil no enciende o necesita limpieza interna..."></textarea>
+                <label class="field-label" for="descripcion">Descripción (opcional)</label>
+                <textarea id="descripcion" placeholder="Detalle breve del equipo o falla..."></textarea>
               </div>
 
               <div class="full">
@@ -804,8 +836,8 @@
                   <div class="priority-left">
                     <input id="prioritario" type="checkbox" />
                     <div>
-                      <div class="priority-title">Solicitar atención prioritaria</div>
-                      <div class="priority-sub">El servidor suma automáticamente el recargo oficial del equipo.</div>
+                      <div class="priority-title">Atención prioritaria</div>
+                      <div class="priority-sub">Aplica recargo oficial (N = 4 → 8%)</div>
                     </div>
                   </div>
                   <span class="priority-pill" id="priorityPill">0%</span>
@@ -814,18 +846,8 @@
 
               <div class="full">
                 <div class="calc-summary">
-                  <div class="calc-row">
-                    <span>Precio base</span>
-                    <span id="calcBase">$0</span>
-                  </div>
-                  <div class="calc-row">
-                    <span id="calcRecargoLabel">Recargo prioritario (0%)</span>
-                    <span id="calcRecargo">$0</span>
-                  </div>
-                  <div class="calc-row total">
-                    <span>Total estimado a pagar</span>
-                    <span id="calcTotal">$0</span>
-                  </div>
+                  <span class="calc-detail" id="calcDetail">Base: $0 · Recargo: $0</span>
+                  <span class="calc-total" id="calcTotal">Total: $0</span>
                 </div>
               </div>
             </div>
@@ -833,40 +855,32 @@
             <button type="submit" class="btn-primary-blue">Registrar turno (POST /api/turnos)</button>
           </form>
         </section>
+      </div>
 
-        <!-- PASO 2: CONSULTAR POR ID -->
+      <!-- COLUMNA 2: BUSCAR POR ID + LISTA -->
+      <div class="col">
         <section class="card">
           <div class="card-header">
             <div class="step-title">
               <span class="step-num green">2</span>
-              <div>
-                <h2>Buscar turno por número (ID)</h2>
-                <p class="card-desc">Consulta la información exacta de un solo turno.</p>
-              </div>
+              <h2>Buscar por ID</h2>
             </div>
             <span class="endpoint-chip get">GET /api/turnos/:id</span>
           </div>
 
           <div class="search-row">
-            <input id="buscarId" type="text" placeholder="Escribe el número del turno (ej. 1)" />
-            <button type="button" class="btn-primary-green" id="btnBuscarId">Buscar turno</button>
+            <input id="buscarId" type="text" placeholder="Número del turno (ej. 1)" />
+            <button type="button" class="btn-primary-green" id="btnBuscarId">Buscar</button>
           </div>
         </section>
-      </div>
 
-      <!-- COLUMNA DERECHA: LISTA Y SIMULADOR DE ERRORES -->
-      <div>
-        <!-- PASO 3: LISTA DE TURNOS -->
-        <section class="card">
+        <section class="card grow">
           <div class="card-header">
             <div class="step-title">
               <span class="step-num green">3</span>
-              <div>
-                <h2>Turnos registrados</h2>
-                <p class="card-desc">Lista en vivo almacenada en el servidor.</p>
-              </div>
+              <h2>Turnos guardados</h2>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;gap:6px;">
               <span class="endpoint-chip get">GET /api/turnos</span>
               <button type="button" class="btn-neutral" id="btnRefrescar">Actualizar</button>
             </div>
@@ -876,40 +890,57 @@
             <div class="empty-state">Cargando turnos...</div>
           </div>
         </section>
+      </div>
 
-        <!-- ZONA SEPARADA: SIMULADOR DE ERRORES HTTP -->
+      <!-- COLUMNA 3: INSPECTOR EN VIVO + ERRORES HTTP -->
+      <div class="col">
         <section class="card">
           <div class="card-header">
             <div class="step-title">
+              <span class="step-num blue">{ }</span>
+              <h2>Inspector HTTP en vivo</h2>
+            </div>
+            <span id="inspectorCode" class="http-badge">200 OK</span>
+          </div>
+
+          <div class="inspector-tabs">
+            <button type="button" class="tab-btn active" id="tabResponse">Respuesta JSON</button>
+            <button type="button" class="tab-btn" id="tabRequest">Petición enviada</button>
+          </div>
+
+          <pre id="inspectorResponse">[]</pre>
+          <pre id="inspectorRequest" class="hidden">GET /api/turnos</pre>
+        </section>
+
+        <section class="card grow">
+          <div class="card-header">
+            <div class="step-title">
               <span class="step-num red">!</span>
-              <div>
-                <h2>Probar validaciones y errores HTTP</h2>
-                <p class="card-desc">Demuestra cómo el servidor rechaza peticiones inválidas sin caerse.</p>
-              </div>
+              <h2>Probar errores HTTP</h2>
             </div>
           </div>
 
           <div class="error-stack">
             <button type="button" class="btn-error-test" id="btnErrorPrecio">
               <span>
-                Enviar precio igual a $0
-                <small>Comprueba que el servidor rechaza valores menores o iguales a cero</small>
+                Precio igual a $0
+                <small>Rechaza precioBase &lt;= 0</small>
               </span>
               <span class="error-tag">400</span>
             </button>
 
             <button type="button" class="btn-error-test" id="btnErrorFaltante">
               <span>
-                Enviar solicitud sin nombre de cliente
-                <small>Comprueba la validación de campos obligatorios</small>
+                Sin nombre de cliente
+                <small>Rechaza campo obligatorio faltante</small>
               </span>
               <span class="error-tag">400</span>
             </button>
 
             <button type="button" class="btn-error-test" id="btnProbar404">
               <span>
-                Consultar un turno inexistente (ID 9999)
-                <small>Comprueba la respuesta cuando el registro no existe</small>
+                ID inexistente (9999)
+                <small>Controla registros que no existen</small>
               </span>
               <span class="error-tag">404</span>
             </button>
@@ -917,29 +948,62 @@
         </section>
       </div>
     </div>
-
-    <!-- INSPECTOR TÉCNICO PARA LA SUSTENTACIÓN -->
-    <details class="inspector-card" open>
-      <summary>
-        <span>Inspector Técnico (Petición y Respuesta JSON en vivo)</span>
-        <span style="font-size:0.78rem;color:#94a3b8;font-weight:500;">Clic para ocultar / mostrar</span>
-      </summary>
-      <div class="inspector-grid">
-        <div>
-          <div class="inspector-col-title">Lo que envió el navegador (Request)</div>
-          <pre id="inspectorRequest">GET /api/turnos</pre>
-        </div>
-        <div>
-          <div class="inspector-col-title">Lo que respondió el servidor (Response JSON)</div>
-          <pre id="inspectorResponse">[]</pre>
-        </div>
-      </div>
-    </details>
   </main>
 
   <script>
     const PORCENTAJE_RECARGO = 8; // N = 4 -> 4 * 2 = 8%
 
+    // =========================================================
+    // CONTROL DE TEMA CLARO / OSCURO
+    // =========================================================
+    const htmlRoot = document.documentElement;
+    const btnTheme = document.getElementById('btnTheme');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function aplicarTema(tema) {
+      htmlRoot.setAttribute('data-theme', tema);
+      localStorage.setItem('tecnisystemas-theme', tema);
+      if (tema === 'dark') {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Tema claro';
+      } else {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Tema oscuro';
+      }
+    }
+
+    const temaGuardado = localStorage.getItem('tecnisystemas-theme') || 'light';
+    aplicarTema(temaGuardado);
+
+    btnTheme.addEventListener('click', () => {
+      const actual = htmlRoot.getAttribute('data-theme');
+      aplicarTema(actual === 'dark' ? 'light' : 'dark');
+    });
+
+    // =========================================================
+    // TABS DEL INSPECTOR HTTP
+    // =========================================================
+    const tabResponse = document.getElementById('tabResponse');
+    const tabRequest = document.getElementById('tabRequest');
+    const inspectorResponse = document.getElementById('inspectorResponse');
+    const inspectorRequest = document.getElementById('inspectorRequest');
+    const inspectorCode = document.getElementById('inspectorCode');
+
+    function seleccionarTab(tab) {
+      const verResp = tab === 'response';
+      tabResponse.classList.toggle('active', verResp);
+      tabRequest.classList.toggle('active', !verResp);
+      inspectorResponse.classList.toggle('hidden', !verResp);
+      inspectorRequest.classList.toggle('hidden', verResp);
+    }
+
+    tabResponse.addEventListener('click', () => seleccionarTab('response'));
+    tabRequest.addEventListener('click', () => seleccionarTab('request'));
+
+    // =========================================================
+    // ELEMENTOS DE LA INTERFAZ
+    // =========================================================
     const formTurno = document.getElementById('formTurno');
     const inputNombre = document.getElementById('nombreCliente');
     const inputServicio = document.getElementById('tipoServicio');
@@ -949,25 +1013,16 @@
     const inputPrioritario = document.getElementById('prioritario');
     const priorityBox = document.getElementById('priorityBox');
     const priorityPill = document.getElementById('priorityPill');
-
-    const calcBase = document.getElementById('calcBase');
-    const calcRecargoLabel = document.getElementById('calcRecargoLabel');
-    const calcRecargo = document.getElementById('calcRecargo');
+    const calcDetail = document.getElementById('calcDetail');
     const calcTotal = document.getElementById('calcTotal');
 
     const inputBuscarId = document.getElementById('buscarId');
     const listaTurnos = document.getElementById('listaTurnos');
-
     const statTotalTurnos = document.getElementById('statTotalTurnos');
-    const statUltimaOp = document.getElementById('statUltimaOp');
-    const statUltimoCodigo = document.getElementById('statUltimoCodigo');
 
-    const feedbackBanner = document.getElementById('feedbackBanner');
+    const feedbackBar = document.getElementById('feedbackBar');
     const feedbackText = document.getElementById('feedbackText');
     const feedbackBadge = document.getElementById('feedbackBadge');
-
-    const inspectorRequest = document.getElementById('inspectorRequest');
-    const inspectorResponse = document.getElementById('inspectorResponse');
 
     function establecerFechaPorDefecto() {
       const manana = new Date();
@@ -994,35 +1049,33 @@
       priorityPill.textContent = esPrio ? `+${PORCENTAJE_RECARGO}%` : '0%';
 
       if (!Number.isFinite(base) || base <= 0) {
-        calcBase.textContent = '$0';
-        calcRecargoLabel.textContent = `Recargo prioritario (${esPrio ? PORCENTAJE_RECARGO : 0}%)`;
-        calcRecargo.textContent = '$0';
-        calcTotal.textContent = '$0';
+        calcDetail.textContent = 'Base: $0 · Recargo: $0';
+        calcTotal.textContent = 'Total: $0';
         return;
       }
 
       const recargo = esPrio ? Math.round(base * (PORCENTAJE_RECARGO / 100) * 100) / 100 : 0;
       const total = Math.round((base + recargo) * 100) / 100;
 
-      calcBase.textContent = formatearMoneda(base);
-      calcRecargoLabel.textContent = `Recargo prioritario (${esPrio ? PORCENTAJE_RECARGO : 0}%)`;
-      calcRecargo.textContent = esPrio ? `+${formatearMoneda(recargo)}` : '$0';
-      calcTotal.textContent = formatearMoneda(total);
+      calcDetail.textContent = `Base: ${formatearMoneda(base)} · Recargo (${esPrio ? PORCENTAJE_RECARGO : 0}%): ${formatearMoneda(recargo)}`;
+      calcTotal.textContent = `Total: ${formatearMoneda(total)}`;
     }
 
-    function mostrarFeedback(esExito, tituloOp, status, statusText, mensajeHumano, metodo, url, cuerpoEnviado, cuerpoRecibido) {
-      feedbackBanner.className = `feedback-banner ${esExito ? 'ok' : 'err'}`;
+    function mostrarResultado(esExito, status, statusText, mensajeHumano, metodo, url, cuerpoEnviado, cuerpoRecibido) {
+      feedbackBar.className = `feedback-bar ${esExito ? 'ok' : 'err'}`;
       feedbackText.innerHTML = mensajeHumano;
-      feedbackBadge.className = `http-badge ${esExito ? 'ok' : 'err'}`;
-      feedbackBadge.textContent = `HTTP ${status} ${statusText}`;
 
-      statUltimaOp.textContent = tituloOp;
-      statUltimoCodigo.textContent = `HTTP ${status} ${statusText}`;
+      const claseBadge = `http-badge ${esExito ? 'ok' : 'err'}`;
+      feedbackBadge.className = claseBadge;
+      feedbackBadge.textContent = `HTTP ${status} ${statusText}`;
+      inspectorCode.className = claseBadge;
+      inspectorCode.textContent = `${status} ${statusText}`;
 
       inspectorRequest.textContent = cuerpoEnviado !== undefined
         ? `${metodo} ${url}\n\n${JSON.stringify(cuerpoEnviado, null, 2)}`
         : `${metodo} ${url}`;
       inspectorResponse.textContent = JSON.stringify(cuerpoRecibido, null, 2);
+      seleccionarTab('response');
     }
 
     async function llamarApi(metodo, url, cuerpo = undefined) {
@@ -1047,7 +1100,7 @@
       statTotalTurnos.textContent = String(turnos.length);
 
       if (!Array.isArray(turnos) || turnos.length === 0) {
-        listaTurnos.innerHTML = '<div class="empty-state">Aún no hay turnos registrados.<br>Usa el <strong>Paso 1</strong> para crear el primero.</div>';
+        listaTurnos.innerHTML = '<div class="empty-state">No hay turnos registrados aún.<br>Usa el <strong>Paso 1</strong> para crear el primero.</div>';
         return;
       }
 
@@ -1062,7 +1115,6 @@
               </span>
             </h4>
             <p>${t.tipoServicio} · ${t.fechaHora.replace('T', ' ')}</p>
-            ${t.descripcion ? `<p>${t.descripcion}</p>` : ''}
           </div>
           <div class="turno-right">
             <div class="turno-total">${formatearMoneda(t.totalPagar)}</div>
@@ -1075,16 +1127,14 @@
 
     async function cargarTurnos(actualizarBanner = true) {
       const { status, statusText, data } = await llamarApi('GET', '/api/turnos');
-      if (Array.isArray(data)) {
-        renderizarLista(data);
-      }
+      if (Array.isArray(data)) renderizarLista(data);
+
       if (actualizarBanner) {
-        mostrarFeedback(
+        mostrarResultado(
           status === 200,
-          'Listar turnos',
           status,
           statusText,
-          `Se consultaron los turnos registrados: hay <strong>${Array.isArray(data) ? data.length : 0}</strong> turno(s) en el servidor.`,
+          `Lista actualizada: hay <strong>${Array.isArray(data) ? data.length : 0}</strong> turno(s) registrados en el servidor.`,
           'GET',
           '/api/turnos',
           undefined,
@@ -1105,24 +1155,22 @@
       const { status, statusText, data } = await llamarApi('GET', url);
 
       if (status === 200) {
-        mostrarFeedback(
+        mostrarResultado(
           true,
-          `Consulta #${data.id}`,
           status,
           statusText,
-          `Turno <strong>#${data.id}</strong> encontrado: <strong>${data.nombreCliente}</strong> — Total a pagar: <strong>${formatearMoneda(data.totalPagar)}</strong>.`,
+          `Turno <strong>#${data.id}</strong> encontrado: <strong>${data.nombreCliente}</strong> — Total: <strong>${formatearMoneda(data.totalPagar)}</strong>.`,
           'GET',
           url,
           undefined,
           data
         );
       } else {
-        mostrarFeedback(
+        mostrarResultado(
           false,
-          `No encontrado (${idLimpio})`,
           status,
           statusText,
-          `El servidor respondió que el turno no existe: <strong>${data.error || 'No encontrado'}</strong>.`,
+          `El servidor respondió <strong>404 Not Found</strong>: "${data.error || 'Registro no encontrado'}".`,
           'GET',
           url,
           undefined,
@@ -1147,12 +1195,11 @@
       const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
 
       if (status === 201) {
-        mostrarFeedback(
+        mostrarResultado(
           true,
-          `Turno #${data.id} creado`,
           status,
           statusText,
-          `Turno <strong>#${data.id}</strong> registrado para <strong>${data.nombreCliente}</strong>. Total calculado por el servidor: <strong>${formatearMoneda(data.totalPagar)}</strong> (${data.prioritario ? `incluye recargo del ${data.porcentajeRecargo}%` : 'sin recargo'}).`,
+          `Turno <strong>#${data.id}</strong> creado para <strong>${data.nombreCliente}</strong> · Total: <strong>${formatearMoneda(data.totalPagar)}</strong> (${data.prioritario ? `recargo ${data.porcentajeRecargo}%` : 'sin recargo'}).`,
           'POST',
           '/api/turnos',
           payload,
@@ -1160,12 +1207,11 @@
         );
         await cargarTurnos(false);
       } else {
-        mostrarFeedback(
+        mostrarResultado(
           false,
-          'Validación rechazada',
           status,
           statusText,
-          `El servidor rechazó los datos: <strong>${data.error || 'Datos inválidos'}</strong>.`,
+          `Solicitud rechazada (<strong>${status}</strong>): "${data.error || 'Datos inválidos'}".`,
           'POST',
           '/api/turnos',
           payload,
@@ -1209,12 +1255,11 @@
         prioritario: true
       };
       const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
-      mostrarFeedback(
+      mostrarResultado(
         false,
-        'Error 400 (precio 0)',
         status,
         statusText,
-        `Validación correcta: el servidor bloqueó el registro con <strong>400 Bad Request</strong> — "${data.error}".`,
+        `Validación correcta (<strong>400 Bad Request</strong>): "${data.error}".`,
         'POST',
         '/api/turnos',
         payload,
@@ -1229,12 +1274,11 @@
         precioBase: 60000
       };
       const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
-      mostrarFeedback(
+      mostrarResultado(
         false,
-        'Error 400 (faltante)',
         status,
         statusText,
-        `Validación correcta: el servidor bloqueó el registro con <strong>400 Bad Request</strong> — "${data.error}".`,
+        `Validación correcta (<strong>400 Bad Request</strong>): "${data.error}".`,
         'POST',
         '/api/turnos',
         payload,
