@@ -54,12 +54,13 @@
       --red-soft-hover: linear-gradient(180deg, #fbe5e5 0%, #f7d4d4 100%);
       --red-border: #efbaba;
       --red-text: #942626;
+      --red-ring: rgba(194, 59, 59, 0.16);
 
       /* Neutro sutil -> Limpiar */
-      --clear-bg: linear-gradient(180deg, #f8f4f5 0%, #f1e8ea 100%);
-      --clear-hover: linear-gradient(180deg, #f1e8ea 0%, #e8dbe0 100%);
-      --clear-border: #dccbd0;
-      --clear-text: #7a4b55;
+      --clear-bg: linear-gradient(180deg, #f8f5f6 0%, #efe8ea 100%);
+      --clear-hover: linear-gradient(180deg, #efe8ea 0%, #e5dbde 100%);
+      --clear-border: #d7c7cc;
+      --clear-text: #6e4750;
     }
 
     [data-theme="dark"] {
@@ -101,8 +102,9 @@
       --red: #e56b6b;
       --red-soft: linear-gradient(180deg, rgba(229, 107, 107, 0.2) 0%, rgba(196, 75, 75, 0.12) 100%);
       --red-soft-hover: linear-gradient(180deg, rgba(229, 107, 107, 0.28) 0%, rgba(196, 75, 75, 0.18) 100%);
-      --red-border: rgba(229, 107, 107, 0.4);
+      --red-border: rgba(229, 107, 107, 0.42);
       --red-text: #f7b8b8;
+      --red-ring: rgba(229, 107, 107, 0.22);
 
       --clear-bg: linear-gradient(180deg, rgba(164, 130, 140, 0.2) 0%, rgba(135, 105, 115, 0.12) 100%);
       --clear-hover: linear-gradient(180deg, rgba(164, 130, 140, 0.28) 0%, rgba(135, 105, 115, 0.2) 100%);
@@ -148,7 +150,7 @@
     }
 
     .topbar-inner {
-      max-width: 1420px;
+      max-width: 1440px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -228,7 +230,6 @@
       background: #38b889;
     }
 
-    /* Botón circular minimalista con SVG vectorial */
     .theme-toggle {
       width: 34px;
       height: 34px;
@@ -254,7 +255,7 @@
     }
 
     .workspace {
-      max-width: 1420px;
+      max-width: 1440px;
       width: 100%;
       margin: 0 auto;
       padding: 12px 16px 16px;
@@ -318,13 +319,13 @@
     /* Grid de 3 columnas balanceadas */
     .bento-grid {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr 1fr;
+      grid-template-columns: 1.08fr 0.94fr 0.98fr;
       gap: 12px;
       align-items: stretch;
       flex: 1;
     }
 
-    @media (max-width: 1120px) {
+    @media (max-width: 1140px) {
       .bento-grid {
         grid-template-columns: 1fr 1fr;
       }
@@ -387,7 +388,6 @@
 
     .step-num.blue { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
     .step-num.green { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
-    .step-num.red { background: var(--red-soft); color: var(--red); border: 1px solid var(--red-border); }
 
     .card-header h2 {
       font-size: 0.93rem;
@@ -407,25 +407,22 @@
     .endpoint-chip.post { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
     .endpoint-chip.get { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
 
-    /* Barra de ejemplos en UNA SOLA FILA perfectamente alineada */
+    /* Barra de ejemplos en UNA SOLA FILA (Prioritario, Normal, Precio $0, Sin cliente, Limpiar) */
     .quick-bar {
       display: grid;
-      grid-template-columns: auto 1fr 1fr auto;
-      align-items: center;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 6px;
-      padding: 7px 9px;
+      padding: 7px;
       background: var(--card-sub-grad);
       border: 1px solid var(--border);
       border-radius: 9px;
       margin-bottom: 11px;
     }
 
-    .quick-label {
-      font-size: 0.73rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      padding-right: 2px;
-      white-space: nowrap;
+    @media (max-width: 520px) {
+      .quick-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     button {
@@ -441,8 +438,8 @@
     }
 
     .btn-chip {
-      padding: 6px 10px;
-      font-size: 0.75rem;
+      padding: 6px 8px;
+      font-size: 0.73rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -470,6 +467,13 @@
     }
     .btn-chip.green:hover { background: var(--green-soft-hover); }
 
+    .btn-chip.red {
+      background: var(--red-soft);
+      color: var(--red-text);
+      border: 1px solid var(--red-border);
+    }
+    .btn-chip.red:hover { background: var(--red-soft-hover); }
+
     .btn-chip.clear {
       background: var(--clear-bg);
       color: var(--clear-text);
@@ -478,12 +482,6 @@
     .btn-chip.clear:hover { background: var(--clear-hover); }
 
     /* Formulario */
-    form#formTurno {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -522,6 +520,29 @@
     textarea:focus {
       border-color: var(--blue);
       box-shadow: 0 0 0 3px var(--blue-border);
+    }
+
+    /* Resaltado visual del campo que provocó un error 400 o 404 */
+    input.field-error,
+    textarea.field-error {
+      border-color: var(--red) !important;
+      box-shadow: 0 0 0 3px var(--red-ring) !important;
+    }
+
+    .form-inline-error {
+      display: none;
+      margin-top: 10px;
+      padding: 8px 11px;
+      border-radius: 8px;
+      background: var(--red-soft);
+      border: 1px solid var(--red-border);
+      color: var(--red-text);
+      font-size: 0.79rem;
+      font-weight: 600;
+    }
+
+    .form-inline-error.visible {
+      display: block;
     }
 
     textarea {
@@ -611,12 +632,7 @@
       color: var(--green);
     }
 
-    /* Botones principales sólidos */
-    .submit-wrap {
-      margin-top: auto;
-      padding-top: 12px;
-    }
-
+    /* Botón Registrar justo debajo del resumen con espacio adecuado */
     .btn-primary-blue {
       width: 100%;
       padding: 11px 14px;
@@ -624,14 +640,15 @@
       background: var(--blue-grad);
       color: #ffffff;
       border: none;
+      margin-top: 14px;
       box-shadow: 0 2px 8px rgba(43, 108, 176, 0.25);
     }
 
     .btn-primary-blue:hover { filter: brightness(1.07); }
 
     .btn-primary-green {
-      padding: 8px 15px;
-      font-size: 0.84rem;
+      padding: 8px 14px;
+      font-size: 0.83rem;
       background: var(--green-grad);
       color: #ffffff;
       border: none;
@@ -641,18 +658,18 @@
 
     .btn-primary-green:hover { filter: brightness(1.07); }
 
-    /* Buscador por ID */
+    /* Buscador por ID con botón Probar 404 integrado */
     .search-row {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
-    /* Lista de turnos con altura equilibrada */
+    /* Lista de turnos */
     .turnos-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 345px;
+      max-height: 365px;
       overflow-y: auto;
       padding-right: 3px;
     }
@@ -688,7 +705,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 235px;
+      max-width: 225px;
     }
 
     .id-badge {
@@ -737,26 +754,40 @@
       font-size: 0.82rem;
     }
 
-    /* Inspector HTTP en columna 3 */
-    .inspector-tabs {
+    /* Columna 3: Inspector HTTP Dual (Petición + Respuesta visibles al mismo tiempo) */
+    .inspector-section {
       display: flex;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .tab-btn {
+      flex-direction: column;
       flex: 1;
-      padding: 6px 8px;
-      font-size: 0.76rem;
-      background: var(--card-sub-grad);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-strong);
+      gap: 10px;
     }
 
-    .tab-btn.active {
-      background: var(--blue-soft);
-      color: var(--blue);
-      border-color: var(--blue-border);
+    .inspector-pane {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .pane-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .pane-label {
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .pane-meta {
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
     }
 
     pre {
@@ -768,56 +799,10 @@
       font-size: 0.76rem;
       color: var(--code-text);
       overflow: auto;
-      height: 222px;
+      height: 190px;
+      flex: 1;
       white-space: pre-wrap;
       word-break: break-word;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    /* Simulador de errores */
-    .error-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .btn-error-test {
-      width: 100%;
-      text-align: left;
-      padding: 8px 11px;
-      background: var(--red-soft);
-      border: 1px solid var(--red-border);
-      color: var(--red-text);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-    }
-
-    .btn-error-test:hover {
-      background: var(--red-soft-hover);
-    }
-
-    .btn-error-test small {
-      display: block;
-      font-weight: 400;
-      font-size: 0.72rem;
-      opacity: 0.88;
-    }
-
-    .error-tag {
-      font-family: 'Cascadia Code', Consolas, monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      background: var(--red);
-      color: #ffffff;
-      padding: 2px 7px;
-      border-radius: 5px;
-      flex-shrink: 0;
     }
   </style>
 </head>
@@ -854,14 +839,14 @@
     <!-- Resumen humano en una línea -->
     <section id="feedbackBar" class="feedback-bar">
       <div id="feedbackText">
-        Panel listo: registra un turno en el <strong>Paso 1</strong>, consulta por ID en el <strong>Paso 2</strong> o valida errores HTTP en el panel derecho.
+        Panel listo: elige un escenario en el <strong>Paso 1</strong> o llena tus propios datos para ver en vivo la petición y la respuesta del servidor.
       </div>
       <span id="feedbackBadge" class="http-badge">HTTP 200 OK</span>
     </section>
 
     <!-- Dashboard 3 columnas -->
     <div class="bento-grid">
-      <!-- COLUMNA 1: CREAR TURNO -->
+      <!-- COLUMNA 1: CREAR TURNO + ESCENARIOS DE PRUEBA (VÁLIDOS Y ERRORES 400) -->
       <div class="col">
         <section class="card grow">
           <div class="card-header">
@@ -872,23 +857,25 @@
             <span class="endpoint-chip post">POST /api/turnos</span>
           </div>
 
-          <div class="quick-bar">
-            <span class="quick-label">Ejemplos:</span>
-            <button type="button" class="btn-chip amber" id="btnEjemploPrioritario">Prioritario ($100k)</button>
-            <button type="button" class="btn-chip blue" id="btnEjemploNormal">Normal ($80k)</button>
-            <button type="button" class="btn-chip clear" id="btnLimpiar">Limpiar</button>
+          <!-- Escenarios en una sola fila: Válidos + Errores 400 + Limpiar al final -->
+          <div class="quick-bar" aria-label="Escenarios rápidos">
+            <button type="button" class="btn-chip amber" id="btnEjemploPrioritario" title="Llenar ejemplo prioritario ($100.000)">Prioritario</button>
+            <button type="button" class="btn-chip blue" id="btnEjemploNormal" title="Llenar ejemplo normal ($80.000)">Normal</button>
+            <button type="button" class="btn-chip red" id="btnErrorPrecio" title="Probar error 400 con precioBase igual a 0">Error $0</button>
+            <button type="button" class="btn-chip red" id="btnErrorFaltante" title="Probar error 400 sin nombre de cliente">Sin cliente</button>
+            <button type="button" class="btn-chip clear" id="btnLimpiar" title="Limpiar todos los campos">Limpiar</button>
           </div>
 
-          <form id="formTurno">
+          <form id="formTurno" novalidate>
             <div class="form-grid">
               <div>
                 <label class="field-label" for="nombreCliente">Nombre del cliente *</label>
-                <input id="nombreCliente" type="text" placeholder="Ej. Laura Ríos" required />
+                <input id="nombreCliente" type="text" placeholder="Ej. Laura Ríos" />
               </div>
 
               <div>
                 <label class="field-label" for="tipoServicio">Tipo de servicio *</label>
-                <input id="tipoServicio" type="text" list="serviciosSugeridos" placeholder="Ej. Reparación de hardware" required />
+                <input id="tipoServicio" type="text" list="serviciosSugeridos" placeholder="Ej. Reparación de hardware" />
                 <datalist id="serviciosSugeridos">
                   <option value="Mantenimiento preventivo"></option>
                   <option value="Reparación de hardware"></option>
@@ -900,12 +887,12 @@
 
               <div>
                 <label class="field-label" for="fechaHora">Fecha y hora *</label>
-                <input id="fechaHora" type="datetime-local" required />
+                <input id="fechaHora" type="datetime-local" />
               </div>
 
               <div>
                 <label class="field-label" for="precioBase">Precio base (COP) *</label>
-                <input id="precioBase" type="number" step="any" min="1" placeholder="Ej. 100000" required />
+                <input id="precioBase" type="number" step="any" placeholder="Ej. 100000" />
               </div>
 
               <div class="full">
@@ -934,14 +921,16 @@
               </div>
             </div>
 
-            <div class="submit-wrap">
-              <button type="submit" class="btn-primary-blue">Registrar turno (POST /api/turnos)</button>
-            </div>
+            <!-- Aviso inline cuando el servidor devuelve 400 sobre el formulario -->
+            <div id="formInlineError" class="form-inline-error" role="alert"></div>
+
+            <!-- Botón principal justo debajo del resumen con espaciado natural -->
+            <button type="submit" class="btn-primary-blue">Registrar turno (POST /api/turnos)</button>
           </form>
         </section>
       </div>
 
-      <!-- COLUMNA 2: BUSCAR POR ID + LISTA -->
+      <!-- COLUMNA 2: BUSCAR POR ID (+ PROBAR 404) + LISTA DE TURNOS -->
       <div class="col">
         <section class="card">
           <div class="card-header">
@@ -955,6 +944,7 @@
           <div class="search-row">
             <input id="buscarId" type="text" placeholder="Número del turno (ej. 1)" />
             <button type="button" class="btn-primary-green" id="btnBuscarId">Buscar</button>
+            <button type="button" class="btn-chip red" id="btnProbar404" title="Consultar ID inexistente 9999">Error 404</button>
           </div>
         </section>
 
@@ -976,9 +966,9 @@
         </section>
       </div>
 
-      <!-- COLUMNA 3: INSPECTOR EN VIVO + ERRORES HTTP -->
+      <!-- COLUMNA 3: INSPECTOR HTTP DUAL (PETICIÓN + RESPUESTA AL MISMO TIEMPO) -->
       <div class="col">
-        <section class="card">
+        <section class="card grow">
           <div class="card-header">
             <div class="step-title">
               <span class="step-num blue">{ }</span>
@@ -987,47 +977,22 @@
             <span id="inspectorCode" class="http-badge">200 OK</span>
           </div>
 
-          <div class="inspector-tabs">
-            <button type="button" class="tab-btn active" id="tabResponse">Respuesta JSON</button>
-            <button type="button" class="tab-btn" id="tabRequest">Petición enviada</button>
-          </div>
-
-          <pre id="inspectorResponse">[]</pre>
-          <pre id="inspectorRequest" class="hidden">GET /api/turnos</pre>
-        </section>
-
-        <section class="card grow">
-          <div class="card-header">
-            <div class="step-title">
-              <span class="step-num red">!</span>
-              <h2>Probar errores HTTP</h2>
+          <div class="inspector-section">
+            <div class="inspector-pane">
+              <div class="pane-header">
+                <span class="pane-label">Petición enviada (Request)</span>
+                <span class="pane-meta" id="requestEndpointMeta">GET /api/turnos</span>
+              </div>
+              <pre id="inspectorRequest">GET /api/turnos</pre>
             </div>
-          </div>
 
-          <div class="error-stack">
-            <button type="button" class="btn-error-test" id="btnErrorPrecio">
-              <span>
-                Precio igual a $0
-                <small>Rechaza precioBase &lt;= 0</small>
-              </span>
-              <span class="error-tag">400</span>
-            </button>
-
-            <button type="button" class="btn-error-test" id="btnErrorFaltante">
-              <span>
-                Sin nombre de cliente
-                <small>Rechaza campo obligatorio faltante</small>
-              </span>
-              <span class="error-tag">400</span>
-            </button>
-
-            <button type="button" class="btn-error-test" id="btnProbar404">
-              <span>
-                ID inexistente (9999)
-                <small>Controla registros que no existen</small>
-              </span>
-              <span class="error-tag">404</span>
-            </button>
+            <div class="inspector-pane">
+              <div class="pane-header">
+                <span class="pane-label">Respuesta del servidor (Response JSON)</span>
+                <span class="pane-meta" id="responseTimeMeta">application/json</span>
+              </div>
+              <pre id="inspectorResponse">[]</pre>
+            </div>
           </div>
         </section>
       </div>
@@ -1068,27 +1033,7 @@
     });
 
     // =========================================================
-    // TABS DEL INSPECTOR HTTP
-    // =========================================================
-    const tabResponse = document.getElementById('tabResponse');
-    const tabRequest = document.getElementById('tabRequest');
-    const inspectorResponse = document.getElementById('inspectorResponse');
-    const inspectorRequest = document.getElementById('inspectorRequest');
-    const inspectorCode = document.getElementById('inspectorCode');
-
-    function seleccionarTab(tab) {
-      const verResp = tab === 'response';
-      tabResponse.classList.toggle('active', verResp);
-      tabRequest.classList.toggle('active', !verResp);
-      inspectorResponse.classList.toggle('hidden', !verResp);
-      inspectorRequest.classList.toggle('hidden', verResp);
-    }
-
-    tabResponse.addEventListener('click', () => seleccionarTab('response'));
-    tabRequest.addEventListener('click', () => seleccionarTab('request'));
-
-    // =========================================================
-    // UTILIDADES Y ELEMENTOS
+    // REFERENCIAS DEL DOM
     // =========================================================
     const formTurno = document.getElementById('formTurno');
     const inputNombre = document.getElementById('nombreCliente');
@@ -1101,6 +1046,7 @@
     const priorityPill = document.getElementById('priorityPill');
     const calcDetail = document.getElementById('calcDetail');
     const calcTotal = document.getElementById('calcTotal');
+    const formInlineError = document.getElementById('formInlineError');
 
     const inputBuscarId = document.getElementById('buscarId');
     const listaTurnos = document.getElementById('listaTurnos');
@@ -1110,6 +1056,12 @@
     const feedbackText = document.getElementById('feedbackText');
     const feedbackBadge = document.getElementById('feedbackBadge');
 
+    const inspectorCode = document.getElementById('inspectorCode');
+    const inspectorRequest = document.getElementById('inspectorRequest');
+    const inspectorResponse = document.getElementById('inspectorResponse');
+    const requestEndpointMeta = document.getElementById('requestEndpointMeta');
+    const responseTimeMeta = document.getElementById('responseTimeMeta');
+
     function escaparHtml(texto) {
       return String(texto)
         .replace(/&/g, '&amp;')
@@ -1117,6 +1069,27 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function limpiarErroresVisuales() {
+      [inputNombre, inputServicio, inputFecha, inputPrecio, inputBuscarId].forEach((el) => {
+        el.classList.remove('field-error');
+      });
+      formInlineError.textContent = '';
+      formInlineError.classList.remove('visible');
+    }
+
+    function resaltarCampoConError(mensaje) {
+      const texto = String(mensaje || '').toLowerCase();
+      if (texto.includes('nombrecliente')) inputNombre.classList.add('field-error');
+      else if (texto.includes('tiposervicio')) inputServicio.classList.add('field-error');
+      else if (texto.includes('fechahora')) inputFecha.classList.add('field-error');
+      else if (texto.includes('precio')) inputPrecio.classList.add('field-error');
+
+      if (mensaje) {
+        formInlineError.textContent = `Error 400 del servidor: ${mensaje}`;
+        formInlineError.classList.add('visible');
+      }
     }
 
     function establecerFechaPorDefecto() {
@@ -1156,7 +1129,7 @@
       calcTotal.textContent = `Total: ${formatearMoneda(total)}`;
     }
 
-    function mostrarResultado(esExito, status, statusText, mensajeHumano, metodo, url, cuerpoEnviado, cuerpoRecibido) {
+    function mostrarResultado(esExito, status, statusText, duracionMs, mensajeHumano, metodo, url, cuerpoEnviado, cuerpoRecibido) {
       feedbackBar.className = `feedback-bar ${esExito ? 'ok' : 'err'}`;
       feedbackText.innerHTML = mensajeHumano;
 
@@ -1166,14 +1139,17 @@
       inspectorCode.className = claseBadge;
       inspectorCode.textContent = `${status} ${statusText}`;
 
+      requestEndpointMeta.textContent = `${metodo} ${url}`;
+      responseTimeMeta.textContent = `${duracionMs} ms · JSON`;
+
       inspectorRequest.textContent = cuerpoEnviado !== undefined
-        ? `${metodo} ${url}\n\n${JSON.stringify(cuerpoEnviado, null, 2)}`
+        ? `${metodo} ${url}\nContent-Type: application/json\n\n${JSON.stringify(cuerpoEnviado, null, 2)}`
         : `${metodo} ${url}`;
       inspectorResponse.textContent = JSON.stringify(cuerpoRecibido, null, 2);
-      seleccionarTab('response');
     }
 
     async function llamarApi(metodo, url, cuerpo = undefined) {
+      const inicio = performance.now();
       const opciones = { method: metodo, headers: {} };
       if (cuerpo !== undefined) {
         opciones.headers['Content-Type'] = 'application/json';
@@ -1181,6 +1157,7 @@
       }
 
       const res = await fetch(url, opciones);
+      const duracionMs = Math.max(1, Math.round(performance.now() - inicio));
       let data;
       try {
         data = await res.json();
@@ -1188,7 +1165,7 @@
         data = { error: 'Respuesta sin formato JSON' };
       }
 
-      return { status: res.status, statusText: res.statusText, data };
+      return { status: res.status, statusText: res.statusText, duracionMs, data };
     }
 
     function renderizarLista(turnos) {
@@ -1221,14 +1198,16 @@
     }
 
     async function cargarTurnos(actualizarBanner = true) {
-      const { status, statusText, data } = await llamarApi('GET', '/api/turnos');
+      const { status, statusText, duracionMs, data } = await llamarApi('GET', '/api/turnos');
       if (Array.isArray(data)) renderizarLista(data);
 
       if (actualizarBanner) {
+        limpiarErroresVisuales();
         mostrarResultado(
           status === 200,
           status,
           statusText,
+          duracionMs,
           `Lista actualizada: hay <strong>${Array.isArray(data) ? data.length : 0}</strong> turno(s) registrados en el servidor.`,
           'GET',
           '/api/turnos',
@@ -1236,24 +1215,28 @@
           data
         );
       } else {
+        requestEndpointMeta.textContent = 'GET /api/turnos';
+        responseTimeMeta.textContent = `${duracionMs} ms · JSON`;
         inspectorRequest.textContent = 'GET /api/turnos';
         inspectorResponse.textContent = JSON.stringify(data, null, 2);
       }
     }
 
     async function consultarPorId(id) {
+      limpiarErroresVisuales();
       const idLimpio = String(id).trim();
       if (!idLimpio) return;
       inputBuscarId.value = idLimpio;
 
       const url = `/api/turnos/${encodeURIComponent(idLimpio)}`;
-      const { status, statusText, data } = await llamarApi('GET', url);
+      const { status, statusText, duracionMs, data } = await llamarApi('GET', url);
 
       if (status === 200) {
         mostrarResultado(
           true,
           status,
           statusText,
+          duracionMs,
           `Turno <strong>#${escaparHtml(data.id)}</strong> encontrado: <strong>${escaparHtml(data.nombreCliente)}</strong> — Total: <strong>${formatearMoneda(data.totalPagar)}</strong>.`,
           'GET',
           url,
@@ -1261,10 +1244,12 @@
           data
         );
       } else {
+        inputBuscarId.classList.add('field-error');
         mostrarResultado(
           false,
           status,
           statusText,
+          duracionMs,
           `El servidor respondió <strong>404 Not Found</strong>: "${escaparHtml(data.error || 'Registro no encontrado')}".`,
           'GET',
           url,
@@ -1276,24 +1261,25 @@
 
     window.consultarPorId = consultarPorId;
 
-    formTurno.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    async function enviarFormularioActual() {
+      limpiarErroresVisuales();
       const payload = {
         nombreCliente: inputNombre.value,
         tipoServicio: inputServicio.value,
         descripcion: inputDescripcion.value,
         fechaHora: inputFecha.value,
-        precioBase: Number(inputPrecio.value),
+        precioBase: inputPrecio.value === '' ? null : Number(inputPrecio.value),
         prioritario: inputPrioritario.checked
       };
 
-      const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
+      const { status, statusText, duracionMs, data } = await llamarApi('POST', '/api/turnos', payload);
 
       if (status === 201) {
         mostrarResultado(
           true,
           status,
           statusText,
+          duracionMs,
           `Turno <strong>#${escaparHtml(data.id)}</strong> creado para <strong>${escaparHtml(data.nombreCliente)}</strong> · Total: <strong>${formatearMoneda(data.totalPagar)}</strong> (${data.prioritario ? `recargo ${data.porcentajeRecargo}%` : 'sin recargo'}).`,
           'POST',
           '/api/turnos',
@@ -1302,20 +1288,29 @@
         );
         await cargarTurnos(false);
       } else {
+        resaltarCampoConError(data.error);
         mostrarResultado(
           false,
           status,
           statusText,
-          `Solicitud rechazada (<strong>${status}</strong>): "${escaparHtml(data.error || 'Datos inválidos')}".`,
+          duracionMs,
+          `Validación HTTP <strong>${status} Bad Request</strong>: "${escaparHtml(data.error || 'Datos inválidos')}".`,
           'POST',
           '/api/turnos',
           payload,
           data
         );
       }
+    }
+
+    formTurno.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await enviarFormularioActual();
     });
 
+    // Escenarios rápidos aplicados directamente al formulario
     document.getElementById('btnEjemploPrioritario').addEventListener('click', () => {
+      limpiarErroresVisuales();
       inputNombre.value = 'Laura Ríos';
       inputServicio.value = 'Reparación de hardware';
       inputDescripcion.value = 'Cambio de pantalla urgente';
@@ -1326,6 +1321,7 @@
     });
 
     document.getElementById('btnEjemploNormal').addEventListener('click', () => {
+      limpiarErroresVisuales();
       inputNombre.value = 'Carlos Mendoza';
       inputServicio.value = 'Mantenimiento preventivo';
       inputDescripcion.value = 'Limpieza interna y pasta térmica';
@@ -1335,50 +1331,33 @@
       actualizarCalculo();
     });
 
-    document.getElementById('btnLimpiar').addEventListener('click', () => {
-      formTurno.reset();
-      establecerFechaPorDefecto();
-      actualizarCalculo();
-    });
-
     document.getElementById('btnErrorPrecio').addEventListener('click', async () => {
-      const payload = {
-        nombreCliente: 'Pedro Ruiz',
-        tipoServicio: 'Diagnóstico general',
-        fechaHora: '2026-11-27T15:00',
-        precioBase: 0,
-        prioritario: true
-      };
-      const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
-      mostrarResultado(
-        false,
-        status,
-        statusText,
-        `Validación correcta (<strong>400 Bad Request</strong>): "${escaparHtml(data.error)}".`,
-        'POST',
-        '/api/turnos',
-        payload,
-        data
-      );
+      inputNombre.value = 'Pedro Ruiz';
+      inputServicio.value = 'Diagnóstico general';
+      inputDescripcion.value = 'Prueba de validación con precio en cero';
+      establecerFechaPorDefecto();
+      inputPrecio.value = '0';
+      inputPrioritario.checked = true;
+      actualizarCalculo();
+      await enviarFormularioActual();
     });
 
     document.getElementById('btnErrorFaltante').addEventListener('click', async () => {
-      const payload = {
-        tipoServicio: 'Diagnóstico general',
-        fechaHora: '2026-11-27T15:00',
-        precioBase: 60000
-      };
-      const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
-      mostrarResultado(
-        false,
-        status,
-        statusText,
-        `Validación correcta (<strong>400 Bad Request</strong>): "${escaparHtml(data.error)}".`,
-        'POST',
-        '/api/turnos',
-        payload,
-        data
-      );
+      inputNombre.value = '';
+      inputServicio.value = 'Diagnóstico general';
+      inputDescripcion.value = 'Prueba de validación sin nombre de cliente';
+      establecerFechaPorDefecto();
+      inputPrecio.value = '60000';
+      inputPrioritario.checked = false;
+      actualizarCalculo();
+      await enviarFormularioActual();
+    });
+
+    document.getElementById('btnLimpiar').addEventListener('click', () => {
+      limpiarErroresVisuales();
+      formTurno.reset();
+      establecerFechaPorDefecto();
+      actualizarCalculo();
     });
 
     document.getElementById('btnBuscarId').addEventListener('click', () => {
@@ -1391,6 +1370,17 @@
 
     document.getElementById('btnRefrescar').addEventListener('click', () => {
       cargarTurnos(true);
+    });
+
+    [inputNombre, inputServicio, inputFecha, inputPrecio].forEach((el) => {
+      el.addEventListener('input', () => {
+        el.classList.remove('field-error');
+        formInlineError.classList.remove('visible');
+      });
+    });
+
+    inputBuscarId.addEventListener('input', () => {
+      inputBuscarId.classList.remove('field-error');
     });
 
     inputPrecio.addEventListener('input', actualizarCalculo);
