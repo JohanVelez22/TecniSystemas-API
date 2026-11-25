@@ -3,22 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TecniSystemas API — Panel de Pruebas REST</title>
+  <title>TecniSystemas — Gestión de Turnos (API REST)</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: #1e293b;
-      --panel-2: #162033;
-      --border: #334155;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --green: #10b981;
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --purple: #8b5cf6;
-      --radius: 12px;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-soft: #f1f5f9;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+
+      /* Sistema semántico de colores */
+      --blue: #2563eb;
+      --blue-hover: #1d4ed8;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+
+      --green: #059669;
+      --green-hover: #047857;
+      --green-soft: #ecfdf5;
+      --green-border: #a7f3d0;
+
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --amber-border: #fde68a;
+
+      --red: #dc2626;
+      --red-hover: #b91c1c;
+      --red-soft: #fef2f2;
+      --red-border: #fecaca;
+
+      --radius: 14px;
+      --radius-sm: 9px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.04);
     }
 
     * {
@@ -33,111 +52,276 @@
       color: var(--text);
       line-height: 1.5;
       min-height: 100vh;
-      padding: 24px 16px 48px;
     }
 
-    .container {
-      max-width: 1180px;
+    /* Barra superior */
+    .topbar {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 18px 24px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .topbar-inner {
+      max-width: 1160px;
       margin: 0 auto;
-    }
-
-    header {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px 24px;
-      margin-bottom: 20px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--blue);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #fff;
+      flex-shrink: 0;
     }
 
     .brand h1 {
-      font-size: 1.55rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
 
     .brand p {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-top: 4px;
+      font-size: 0.85rem;
+      color: #94a3b8;
     }
 
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
+    .server-pill {
+      display: inline-flex;
+      align-items: center;
       gap: 8px;
-    }
-
-    .badge {
-      font-size: 0.8rem;
-      font-weight: 600;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
       padding: 6px 12px;
       border-radius: 999px;
-      background: #0f172a;
-      border: 1px solid var(--border);
-      color: #cbd5e1;
+      font-size: 0.82rem;
+      font-weight: 600;
     }
 
-    .badge.highlight {
-      border-color: var(--primary);
-      color: #93c5fd;
-      background: rgba(59, 130, 246, 0.12);
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
     }
 
-    .grid {
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 22px 16px 48px;
+    }
+
+    /* Tarjetas de resumen superior */
+    .stats-bar {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 720px) {
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 2px;
+      color: var(--text);
+    }
+
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Banner de resultado en lenguaje humano */
+    .feedback-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .feedback-banner.ok {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+      color: #065f46;
+    }
+
+    .feedback-banner.err {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+      color: #991b1b;
+    }
+
+    .feedback-text {
+      font-size: 0.93rem;
+      font-weight: 500;
+    }
+
+    .http-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-strong);
+      white-space: nowrap;
+    }
+
+    .http-badge.ok {
+      background: #ffffff;
+      color: var(--green);
+      border-color: var(--green-border);
+    }
+
+    .http-badge.err {
+      background: #ffffff;
+      color: var(--red);
+      border-color: var(--red-border);
+    }
+
+    /* Layout principal */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: 20px;
       align-items: start;
     }
 
-    @media (max-width: 900px) {
-      .grid {
+    @media (max-width: 920px) {
+      .main-grid {
         grid-template-columns: 1fr;
       }
     }
 
     .card {
-      background: var(--panel);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
       margin-bottom: 20px;
+      box-shadow: var(--shadow);
     }
 
     .card-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 10px;
+      align-items: flex-start;
+      gap: 12px;
       margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
     }
 
-    .card-title {
-      font-size: 1.05rem;
-      font-weight: 600;
+    .step-title {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .method {
-      font-size: 0.72rem;
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 0.85rem;
       font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      letter-spacing: 0.04em;
+      flex-shrink: 0;
     }
 
-    .method.get { background: rgba(16, 185, 129, 0.18); color: #34d399; }
-    .method.post { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .step-num.blue { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
+    .step-num.green { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
+    .step-num.red { background: var(--red-soft); color: var(--red); border: 1px solid var(--red-border); }
 
+    .card-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .endpoint-chip {
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .endpoint-chip.post { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
+    .endpoint-chip.get { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
+
+    /* Barra de ejemplos rápidos */
+    .quick-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--surface-soft);
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+    }
+
+    .quick-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    /* Formulario */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -154,12 +338,12 @@
       }
     }
 
-    label {
+    label.field-label {
       display: block;
-      font-size: 0.82rem;
-      color: var(--muted);
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--text-secondary);
       margin-bottom: 5px;
-      font-weight: 500;
     }
 
     input[type="text"],
@@ -167,174 +351,224 @@
     input[type="datetime-local"],
     textarea {
       width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
       color: var(--text);
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       padding: 10px 12px;
       font-size: 0.92rem;
       font-family: inherit;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
 
     input:focus,
     textarea:focus {
-      border-color: var(--primary);
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
     textarea {
       resize: vertical;
-      min-height: 68px;
+      min-height: 62px;
     }
 
-    .checkbox-row {
+    /* Tarjeta de prioridad */
+    .priority-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--surface-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .priority-box.active {
+      background: var(--amber-soft);
+      border-color: var(--amber-border);
+    }
+
+    .priority-left {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
+    }
+
+    .priority-left input {
+      width: 19px;
+      height: 19px;
+      accent-color: var(--amber);
       cursor: pointer;
     }
 
-    .checkbox-row input {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-
-    .checkbox-row span {
+    .priority-title {
       font-size: 0.9rem;
-      color: var(--text);
-    }
-
-    .preview-box {
-      background: var(--panel-2);
-      border: 1px dashed var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 0.88rem;
-    }
-
-    .preview-total {
-      font-size: 1.08rem;
-      font-weight: 700;
-      color: #34d399;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 0.88rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.08s, background 0.15s, opacity 0.15s;
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-    .btn-primary:hover { background: var(--primary-hover); }
-
-    .btn-secondary {
-      background: #334155;
       color: var(--text);
     }
-    .btn-secondary:hover { background: #475569; }
 
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.16);
-      color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.35);
-    }
-    .btn-danger:hover { background: rgba(239, 68, 68, 0.25); }
-
-    .btn-warn {
-      background: rgba(245, 158, 11, 0.16);
-      color: #fcd34d;
-      border: 1px solid rgba(245, 158, 11, 0.35);
-    }
-    .btn-warn:hover { background: rgba(245, 158, 11, 0.25); }
-
-    .inline-form {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .priority-sub {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
     }
 
-    .inline-form input {
-      flex: 1;
-      min-width: 140px;
-    }
-
-    .status-pill {
-      font-size: 0.82rem;
+    .priority-pill {
+      font-size: 0.78rem;
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 999px;
-      background: #334155;
-      color: #e2e8f0;
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
     }
 
-    .status-2xx { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-    .status-4xx { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-    .status-5xx { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+    .priority-box.active .priority-pill {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #ffffff;
+    }
 
-    pre {
-      background: #0b1120;
+    /* Resumen de cálculo */
+    .calc-summary {
+      background: var(--surface-soft);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      font-family: 'Cascadia Code', Consolas, monospace;
-      font-size: 0.82rem;
-      color: #e2e8f0;
-      overflow-x: auto;
-      max-height: 290px;
-      white-space: pre-wrap;
-      word-break: break-word;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.86rem;
     }
 
-    .inspector-label {
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-secondary);
+    }
+
+    .calc-row.total {
+      border-top: 1px solid var(--border-strong);
+      margin-top: 4px;
+      padding-top: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    /* Botones con jerarquía clara */
+    button {
+      font-family: inherit;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.06s;
+    }
+
+    button:active {
+      transform: scale(0.99);
+    }
+
+    .btn-primary-blue {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      background: var(--blue);
+      color: #ffffff;
+      border: 1px solid var(--blue);
+      margin-top: 14px;
+    }
+
+    .btn-primary-blue:hover { background: var(--blue-hover); }
+
+    .btn-primary-green {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      background: var(--green);
+      color: #ffffff;
+      border: 1px solid var(--green);
+      white-space: nowrap;
+    }
+
+    .btn-primary-green:hover { background: var(--green-hover); }
+
+    .btn-neutral {
+      padding: 6px 11px;
+      font-size: 0.8rem;
+      background: #ffffff;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-strong);
+    }
+
+    .btn-neutral:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .btn-error-test {
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      background: var(--red-soft);
+      border: 1px solid var(--red-border);
+      color: #991b1b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-error-test:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+    }
+
+    .btn-error-test small {
+      display: block;
+      font-weight: 400;
+      color: #7f1d1d;
       font-size: 0.78rem;
-      color: var(--muted);
-      margin: 10px 0 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
+    .error-tag {
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--red);
+      color: #ffffff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .error-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Buscador por ID */
+    .search-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Lista de turnos */
     .turnos-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      max-height: 420px;
+      max-height: 390px;
       overflow-y: auto;
     }
 
-    .turno-item {
-      background: var(--panel-2);
+    .turno-card {
       border: 1px solid var(--border);
-      border-radius: 10px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
       padding: 12px 14px;
       display: flex;
       justify-content: space-between;
@@ -343,89 +577,203 @@
       flex-wrap: wrap;
     }
 
-    .turno-meta h4 {
-      font-size: 0.95rem;
-      margin-bottom: 3px;
+    .turno-info h4 {
+      font-size: 0.94rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
-    .turno-meta p {
+    .turno-info p {
       font-size: 0.82rem;
-      color: var(--muted);
+      color: var(--text-secondary);
+      margin-top: 2px;
     }
 
-    .turno-price {
+    .id-badge {
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: var(--blue-soft);
+      color: var(--blue);
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .prio-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .prio-badge.si { background: var(--amber-soft); color: #b45309; border: 1px solid var(--amber-border); }
+    .prio-badge.no { background: var(--surface-soft); color: var(--text-secondary); border: 1px solid var(--border-strong); }
+
+    .turno-right {
       text-align: right;
     }
 
-    .turno-price .total {
+    .turno-total {
       font-size: 1rem;
       font-weight: 700;
-      color: #34d399;
+      color: var(--green);
     }
 
-    .tag-prio {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 999px;
-      margin-left: 6px;
+    .turno-base {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
     }
-
-    .tag-prio.si { background: rgba(139, 92, 246, 0.22); color: #c4b5fd; }
-    .tag-prio.no { background: rgba(148, 163, 184, 0.16); color: #cbd5e1; }
 
     .empty-state {
       text-align: center;
-      color: var(--muted);
-      padding: 26px 12px;
-      border: 1px dashed var(--border);
-      border-radius: 8px;
-      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 28px 16px;
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
     }
 
-    .helper-note {
+    /* Inspector técnico plegable / claro */
+    details.inspector-card {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      border: 1px solid #1e293b;
+      box-shadow: var(--shadow);
+    }
+
+    details.inspector-card summary {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.94rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style: none;
+    }
+
+    details.inspector-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .inspector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 780px) {
+      .inspector-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .inspector-col-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    pre {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Cascadia Code', Consolas, monospace;
       font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 8px;
+      color: #e2e8f0;
+      overflow-x: auto;
+      max-height: 240px;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
+  <header class="topbar">
+    <div class="topbar-inner">
       <div class="brand">
-        <h1>TecniSystemas API — Panel Interactivo</h1>
-        <p>Servicio técnico y reparación de computadores · Arquitectura Cliente-Servidor (CIAF)</p>
+        <div class="brand-icon">TS</div>
+        <div>
+          <h1>TecniSystemas · Gestión de Turnos</h1>
+          <p>Servicio técnico de computadores · Taller Arquitectura Cliente-Servidor (CIAF)</p>
+        </div>
       </div>
-      <div class="badges">
-        <span class="badge">Grupo miércoles</span>
-        <span class="badge highlight">N = 4 (Combariza #4)</span>
-        <span class="badge highlight">Recargo prioritario: 8%</span>
+      <div class="server-pill">
+        <span class="dot"></span>
+        API activa en localhost:3000
       </div>
-    </header>
+    </div>
+  </header>
 
-    <div class="grid">
-      <!-- COLUMNA IZQUIERDA: OPERACIONES -->
+  <main class="container">
+    <!-- Resumen rápido -->
+    <section class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-label">Turnos registrados</div>
+        <div class="stat-value" id="statTotalTurnos">0</div>
+        <div class="stat-sub">Guardados en data/turnos.json</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Regla oficial del equipo</div>
+        <div class="stat-value">N = 4 · Recargo 8%</div>
+        <div class="stat-sub">Grupo miércoles · Combariza Garcia (#4)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Última operación</div>
+        <div class="stat-value" id="statUltimaOp">Lista cargada</div>
+        <div class="stat-sub" id="statUltimoCodigo">HTTP 200 OK</div>
+      </div>
+    </section>
+
+    <!-- Mensaje claro en español sobre lo último que ocurrió -->
+    <section id="feedbackBanner" class="feedback-banner">
+      <div class="feedback-text" id="feedbackText">
+        Bienvenido. Sigue el <strong>Paso 1</strong> para registrar un turno, o usa los ejemplos rápidos para probar al instante.
+      </div>
+      <span id="feedbackBadge" class="http-badge">Listo</span>
+    </section>
+
+    <div class="main-grid">
+      <!-- COLUMNA IZQUIERDA: CREAR Y BUSCAR -->
       <div>
-        <!-- PANEL 1: POST /api/turnos -->
+        <!-- PASO 1: CREAR TURNO -->
         <section class="card">
           <div class="card-header">
-            <div class="card-title">
-              <span class="method post">POST</span>
-              <span>/api/turnos — Registrar solicitud</span>
+            <div class="step-title">
+              <span class="step-num blue">1</span>
+              <div>
+                <h2>Registrar nuevo turno</h2>
+                <p class="card-desc">Completa los datos del cliente y del servicio.</p>
+              </div>
             </div>
+            <span class="endpoint-chip post">POST /api/turnos</span>
+          </div>
+
+          <div class="quick-bar">
+            <span class="quick-label">Rellenar ejemplo:</span>
+            <button type="button" class="btn-neutral" id="btnEjemploPrioritario">Prioritario ($100.000)</button>
+            <button type="button" class="btn-neutral" id="btnEjemploNormal">Normal ($80.000)</button>
+            <button type="button" class="btn-neutral" id="btnLimpiar">Limpiar</button>
           </div>
 
           <form id="formTurno">
             <div class="form-grid">
               <div>
-                <label for="nombreCliente">Nombre del cliente *</label>
+                <label class="field-label" for="nombreCliente">Nombre del cliente *</label>
                 <input id="nombreCliente" type="text" placeholder="Ej. Laura Ríos" required />
               </div>
 
               <div>
-                <label for="tipoServicio">Tipo de servicio *</label>
+                <label class="field-label" for="tipoServicio">Tipo de servicio *</label>
                 <input id="tipoServicio" type="text" list="serviciosSugeridos" placeholder="Ej. Reparación de hardware" required />
                 <datalist id="serviciosSugeridos">
                   <option value="Mantenimiento preventivo"></option>
@@ -437,100 +785,157 @@
               </div>
 
               <div>
-                <label for="fechaHora">Fecha y hora de atención *</label>
+                <label class="field-label" for="fechaHora">Fecha y hora de atención *</label>
                 <input id="fechaHora" type="datetime-local" required />
               </div>
 
               <div>
-                <label for="precioBase">Precio base (COP) *</label>
-                <input id="precioBase" type="number" step="any" placeholder="Ej. 100000" required />
+                <label class="field-label" for="precioBase">Precio base (COP) *</label>
+                <input id="precioBase" type="number" step="any" min="1" placeholder="Ej. 100000" required />
               </div>
 
               <div class="full">
-                <label for="descripcion">Descripción (opcional)</label>
-                <textarea id="descripcion" placeholder="Detalle del problema del equipo..."></textarea>
+                <label class="field-label" for="descripcion">Descripción del problema (opcional)</label>
+                <textarea id="descripcion" placeholder="Ej. El portátil no enciende o necesita limpieza interna..."></textarea>
               </div>
 
               <div class="full">
-                <label class="checkbox-row">
-                  <input id="prioritario" type="checkbox" />
-                  <span><strong>Atención prioritaria</strong> (el servidor aplicará el recargo oficial del 8%)</span>
+                <label class="priority-box" id="priorityBox" for="prioritario">
+                  <div class="priority-left">
+                    <input id="prioritario" type="checkbox" />
+                    <div>
+                      <div class="priority-title">Solicitar atención prioritaria</div>
+                      <div class="priority-sub">El servidor suma automáticamente el recargo oficial del equipo.</div>
+                    </div>
+                  </div>
+                  <span class="priority-pill" id="priorityPill">0%</span>
                 </label>
               </div>
 
               <div class="full">
-                <div class="preview-box">
-                  <span id="previewFormula">Estimado: precioBase sin recargo (0%)</span>
-                  <span class="preview-total" id="previewTotal">$0</span>
+                <div class="calc-summary">
+                  <div class="calc-row">
+                    <span>Precio base</span>
+                    <span id="calcBase">$0</span>
+                  </div>
+                  <div class="calc-row">
+                    <span id="calcRecargoLabel">Recargo prioritario (0%)</span>
+                    <span id="calcRecargo">$0</span>
+                  </div>
+                  <div class="calc-row total">
+                    <span>Total estimado a pagar</span>
+                    <span id="calcTotal">$0</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="btn-row">
-              <button type="submit" class="btn-primary">Enviar POST /api/turnos</button>
-              <button type="button" class="btn-secondary" id="btnEjemploPrioritario">Llenar prioritario ($100.000)</button>
-              <button type="button" class="btn-secondary" id="btnEjemploNormal">Llenar normal ($80.000)</button>
-            </div>
-            <div class="btn-row">
-              <button type="button" class="btn-warn" id="btnErrorPrecio">Probar 400 (precioBase = 0)</button>
-              <button type="button" class="btn-danger" id="btnErrorFaltante">Probar 400 (sin nombreCliente)</button>
-            </div>
-            <p class="helper-note">
-              El cálculo definitivo siempre lo ejecuta el servidor en <code>services/turnos.service.js</code>.
-            </p>
+            <button type="submit" class="btn-primary-blue">Registrar turno (POST /api/turnos)</button>
           </form>
         </section>
 
-        <!-- PANEL 2: GET /api/turnos/:id -->
+        <!-- PASO 2: CONSULTAR POR ID -->
         <section class="card">
           <div class="card-header">
-            <div class="card-title">
-              <span class="method get">GET</span>
-              <span>/api/turnos/:id — Consultar por identificador</span>
+            <div class="step-title">
+              <span class="step-num green">2</span>
+              <div>
+                <h2>Buscar turno por número (ID)</h2>
+                <p class="card-desc">Consulta la información exacta de un solo turno.</p>
+              </div>
             </div>
+            <span class="endpoint-chip get">GET /api/turnos/:id</span>
           </div>
 
-          <div class="inline-form">
-            <input id="buscarId" type="text" placeholder="Ingresa un ID (ej. 1)" />
-            <button type="button" class="btn-primary" id="btnBuscarId">Consultar ID</button>
-            <button type="button" class="btn-danger" id="btnProbar404">Probar 404 (ID 9999)</button>
+          <div class="search-row">
+            <input id="buscarId" type="text" placeholder="Escribe el número del turno (ej. 1)" />
+            <button type="button" class="btn-primary-green" id="btnBuscarId">Buscar turno</button>
           </div>
         </section>
       </div>
 
-      <!-- COLUMNA DERECHA: INSPECTOR HTTP Y LISTA -->
+      <!-- COLUMNA DERECHA: LISTA Y SIMULADOR DE ERRORES -->
       <div>
-        <!-- PANEL 3: INSPECTOR HTTP -->
+        <!-- PASO 3: LISTA DE TURNOS -->
         <section class="card">
           <div class="card-header">
-            <div class="card-title">Inspector HTTP en Vivo</div>
-            <span class="status-pill" id="inspectorStatus">Sin peticiones aún</span>
-          </div>
-
-          <div class="inspector-label">Última petición</div>
-          <pre id="inspectorRequest">Haz clic en cualquier botón para ver aquí el método, la URL y el JSON enviado.</pre>
-
-          <div class="inspector-label">Respuesta JSON del servidor</div>
-          <pre id="inspectorResponse">{}</pre>
-        </section>
-
-        <!-- PANEL 4: GET /api/turnos -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title">
-              <span class="method get">GET</span>
-              <span>/api/turnos — Turnos guardados (<span id="contadorTurnos">0</span>)</span>
+            <div class="step-title">
+              <span class="step-num green">3</span>
+              <div>
+                <h2>Turnos registrados</h2>
+                <p class="card-desc">Lista en vivo almacenada en el servidor.</p>
+              </div>
             </div>
-            <button type="button" class="btn-secondary" id="btnRefrescar">Actualizar lista</button>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="endpoint-chip get">GET /api/turnos</span>
+              <button type="button" class="btn-neutral" id="btnRefrescar">Actualizar</button>
+            </div>
           </div>
 
           <div id="listaTurnos" class="turnos-list">
             <div class="empty-state">Cargando turnos...</div>
           </div>
         </section>
+
+        <!-- ZONA SEPARADA: SIMULADOR DE ERRORES HTTP -->
+        <section class="card">
+          <div class="card-header">
+            <div class="step-title">
+              <span class="step-num red">!</span>
+              <div>
+                <h2>Probar validaciones y errores HTTP</h2>
+                <p class="card-desc">Demuestra cómo el servidor rechaza peticiones inválidas sin caerse.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="error-stack">
+            <button type="button" class="btn-error-test" id="btnErrorPrecio">
+              <span>
+                Enviar precio igual a $0
+                <small>Comprueba que el servidor rechaza valores menores o iguales a cero</small>
+              </span>
+              <span class="error-tag">400</span>
+            </button>
+
+            <button type="button" class="btn-error-test" id="btnErrorFaltante">
+              <span>
+                Enviar solicitud sin nombre de cliente
+                <small>Comprueba la validación de campos obligatorios</small>
+              </span>
+              <span class="error-tag">400</span>
+            </button>
+
+            <button type="button" class="btn-error-test" id="btnProbar404">
+              <span>
+                Consultar un turno inexistente (ID 9999)
+                <small>Comprueba la respuesta cuando el registro no existe</small>
+              </span>
+              <span class="error-tag">404</span>
+            </button>
+          </div>
+        </section>
       </div>
     </div>
-  </div>
+
+    <!-- INSPECTOR TÉCNICO PARA LA SUSTENTACIÓN -->
+    <details class="inspector-card" open>
+      <summary>
+        <span>Inspector Técnico (Petición y Respuesta JSON en vivo)</span>
+        <span style="font-size:0.78rem;color:#94a3b8;font-weight:500;">Clic para ocultar / mostrar</span>
+      </summary>
+      <div class="inspector-grid">
+        <div>
+          <div class="inspector-col-title">Lo que envió el navegador (Request)</div>
+          <pre id="inspectorRequest">GET /api/turnos</pre>
+        </div>
+        <div>
+          <div class="inspector-col-title">Lo que respondió el servidor (Response JSON)</div>
+          <pre id="inspectorResponse">[]</pre>
+        </div>
+      </div>
+    </details>
+  </main>
 
   <script>
     const PORCENTAJE_RECARGO = 8; // N = 4 -> 4 * 2 = 8%
@@ -542,24 +947,34 @@
     const inputPrecio = document.getElementById('precioBase');
     const inputDescripcion = document.getElementById('descripcion');
     const inputPrioritario = document.getElementById('prioritario');
-    const previewFormula = document.getElementById('previewFormula');
-    const previewTotal = document.getElementById('previewTotal');
+    const priorityBox = document.getElementById('priorityBox');
+    const priorityPill = document.getElementById('priorityPill');
+
+    const calcBase = document.getElementById('calcBase');
+    const calcRecargoLabel = document.getElementById('calcRecargoLabel');
+    const calcRecargo = document.getElementById('calcRecargo');
+    const calcTotal = document.getElementById('calcTotal');
 
     const inputBuscarId = document.getElementById('buscarId');
     const listaTurnos = document.getElementById('listaTurnos');
-    const contadorTurnos = document.getElementById('contadorTurnos');
 
-    const inspectorStatus = document.getElementById('inspectorStatus');
+    const statTotalTurnos = document.getElementById('statTotalTurnos');
+    const statUltimaOp = document.getElementById('statUltimaOp');
+    const statUltimoCodigo = document.getElementById('statUltimoCodigo');
+
+    const feedbackBanner = document.getElementById('feedbackBanner');
+    const feedbackText = document.getElementById('feedbackText');
+    const feedbackBadge = document.getElementById('feedbackBadge');
+
     const inspectorRequest = document.getElementById('inspectorRequest');
     const inspectorResponse = document.getElementById('inspectorResponse');
 
-    // Fecha por defecto: mañana a las 10:00
     function establecerFechaPorDefecto() {
-      const ahora = new Date();
-      ahora.setDate(ahora.getDate() + 1);
-      const yyyy = ahora.getFullYear();
-      const mm = String(ahora.getMonth() + 1).padStart(2, '0');
-      const dd = String(ahora.getDate()).padStart(2, '0');
+      const manana = new Date();
+      manana.setDate(manana.getDate() + 1);
+      const yyyy = manana.getFullYear();
+      const mm = String(manana.getMonth() + 1).padStart(2, '0');
+      const dd = String(manana.getDate()).padStart(2, '0');
       inputFecha.value = `${yyyy}-${mm}-${dd}T10:00`;
     }
 
@@ -571,34 +986,42 @@
       }).format(valor);
     }
 
-    function actualizarVistaPrevia() {
+    function actualizarCalculo() {
       const base = Number(inputPrecio.value);
       const esPrio = inputPrioritario.checked;
 
+      priorityBox.classList.toggle('active', esPrio);
+      priorityPill.textContent = esPrio ? `+${PORCENTAJE_RECARGO}%` : '0%';
+
       if (!Number.isFinite(base) || base <= 0) {
-        previewFormula.textContent = 'Ingresa un precio base mayor que 0';
-        previewTotal.textContent = '$0';
+        calcBase.textContent = '$0';
+        calcRecargoLabel.textContent = `Recargo prioritario (${esPrio ? PORCENTAJE_RECARGO : 0}%)`;
+        calcRecargo.textContent = '$0';
+        calcTotal.textContent = '$0';
         return;
       }
 
-      if (esPrio) {
-        const total = Math.round((base + base * (PORCENTAJE_RECARGO / 100)) * 100) / 100;
-        previewFormula.textContent = `Fórmula prioritaria: ${base} + (${base} × 8%)`;
-        previewTotal.textContent = formatearMoneda(total);
-      } else {
-        previewFormula.textContent = 'Sin recargo prioritario (0%)';
-        previewTotal.textContent = formatearMoneda(base);
-      }
+      const recargo = esPrio ? Math.round(base * (PORCENTAJE_RECARGO / 100) * 100) / 100 : 0;
+      const total = Math.round((base + recargo) * 100) / 100;
+
+      calcBase.textContent = formatearMoneda(base);
+      calcRecargoLabel.textContent = `Recargo prioritario (${esPrio ? PORCENTAJE_RECARGO : 0}%)`;
+      calcRecargo.textContent = esPrio ? `+${formatearMoneda(recargo)}` : '$0';
+      calcTotal.textContent = formatearMoneda(total);
     }
 
-    function mostrarEnInspector(metodo, url, status, statusText, cuerpoEnviado, cuerpoRecibido) {
-      inspectorStatus.textContent = `HTTP ${status} ${statusText}`;
-      inspectorStatus.className = 'status-pill ' + (status >= 200 && status < 300 ? 'status-2xx' : status >= 400 && status < 500 ? 'status-4xx' : 'status-5xx');
+    function mostrarFeedback(esExito, tituloOp, status, statusText, mensajeHumano, metodo, url, cuerpoEnviado, cuerpoRecibido) {
+      feedbackBanner.className = `feedback-banner ${esExito ? 'ok' : 'err'}`;
+      feedbackText.innerHTML = mensajeHumano;
+      feedbackBadge.className = `http-badge ${esExito ? 'ok' : 'err'}`;
+      feedbackBadge.textContent = `HTTP ${status} ${statusText}`;
 
-      const bloqueReq = cuerpoEnviado !== undefined
+      statUltimaOp.textContent = tituloOp;
+      statUltimoCodigo.textContent = `HTTP ${status} ${statusText}`;
+
+      inspectorRequest.textContent = cuerpoEnviado !== undefined
         ? `${metodo} ${url}\n\n${JSON.stringify(cuerpoEnviado, null, 2)}`
         : `${metodo} ${url}`;
-      inspectorRequest.textContent = bloqueReq;
       inspectorResponse.textContent = JSON.stringify(cuerpoRecibido, null, 2);
     }
 
@@ -614,52 +1037,62 @@
       try {
         data = await res.json();
       } catch {
-        data = { mensaje: 'Respuesta sin cuerpo JSON' };
+        data = { error: 'Respuesta sin formato JSON' };
       }
 
-      mostrarEnInspector(metodo, url, res.status, res.statusText, cuerpo, data);
-      return { status: res.status, data };
+      return { status: res.status, statusText: res.statusText, data };
     }
 
     function renderizarLista(turnos) {
-      contadorTurnos.textContent = String(turnos.length);
+      statTotalTurnos.textContent = String(turnos.length);
 
       if (!Array.isArray(turnos) || turnos.length === 0) {
-        listaTurnos.innerHTML = '<div class="empty-state">No hay turnos registrados aún. Crea uno usando el formulario de la izquierda.</div>';
+        listaTurnos.innerHTML = '<div class="empty-state">Aún no hay turnos registrados.<br>Usa el <strong>Paso 1</strong> para crear el primero.</div>';
         return;
       }
 
       listaTurnos.innerHTML = turnos.map((t) => `
-        <div class="turno-item">
-          <div class="turno-meta">
+        <div class="turno-card">
+          <div class="turno-info">
             <h4>
-              #${t.id} — ${t.nombreCliente}
-              <span class="tag-prio ${t.prioritario ? 'si' : 'no'}">
-                ${t.prioritario ? `Prioritario +${t.porcentajeRecargo}%` : 'Normal 0%'}
+              <span class="id-badge">#${t.id}</span>
+              ${t.nombreCliente}
+              <span class="prio-badge ${t.prioritario ? 'si' : 'no'}">
+                ${t.prioritario ? `Prioritario +${t.porcentajeRecargo}%` : 'Normal'}
               </span>
             </h4>
-            <p>${t.tipoServicio} · ${t.fechaHora}</p>
+            <p>${t.tipoServicio} · ${t.fechaHora.replace('T', ' ')}</p>
             ${t.descripcion ? `<p>${t.descripcion}</p>` : ''}
           </div>
-          <div class="turno-price">
-            <div class="total">${formatearMoneda(t.totalPagar)}</div>
-            <p style="font-size:0.78rem;color:#94a3b8;margin-bottom:6px;">Base: ${formatearMoneda(t.precioBase)}</p>
-            <button type="button" class="btn-secondary" style="padding:5px 10px;font-size:0.78rem;" onclick="consultarPorId(${t.id})">
-              Ver GET /${t.id}
-            </button>
+          <div class="turno-right">
+            <div class="turno-total">${formatearMoneda(t.totalPagar)}</div>
+            <div class="turno-base">Base: ${formatearMoneda(t.precioBase)}</div>
+            <button type="button" class="btn-neutral" onclick="consultarPorId(${t.id})">Ver detalle</button>
           </div>
         </div>
       `).join('');
     }
 
-    async function cargarTurnos(mostrarInspector = true) {
-      if (mostrarInspector) {
-        const { data } = await llamarApi('GET', '/api/turnos');
-        if (Array.isArray(data)) renderizarLista(data);
+    async function cargarTurnos(actualizarBanner = true) {
+      const { status, statusText, data } = await llamarApi('GET', '/api/turnos');
+      if (Array.isArray(data)) {
+        renderizarLista(data);
+      }
+      if (actualizarBanner) {
+        mostrarFeedback(
+          status === 200,
+          'Listar turnos',
+          status,
+          statusText,
+          `Se consultaron los turnos registrados: hay <strong>${Array.isArray(data) ? data.length : 0}</strong> turno(s) en el servidor.`,
+          'GET',
+          '/api/turnos',
+          undefined,
+          data
+        );
       } else {
-        const res = await fetch('/api/turnos');
-        const data = await res.json();
-        if (Array.isArray(data)) renderizarLista(data);
+        inspectorRequest.textContent = 'GET /api/turnos';
+        inspectorResponse.textContent = JSON.stringify(data, null, 2);
       }
     }
 
@@ -667,7 +1100,35 @@
       const idLimpio = String(id).trim();
       if (!idLimpio) return;
       inputBuscarId.value = idLimpio;
-      await llamarApi('GET', `/api/turnos/${encodeURIComponent(idLimpio)}`);
+
+      const url = `/api/turnos/${encodeURIComponent(idLimpio)}`;
+      const { status, statusText, data } = await llamarApi('GET', url);
+
+      if (status === 200) {
+        mostrarFeedback(
+          true,
+          `Consulta #${data.id}`,
+          status,
+          statusText,
+          `Turno <strong>#${data.id}</strong> encontrado: <strong>${data.nombreCliente}</strong> — Total a pagar: <strong>${formatearMoneda(data.totalPagar)}</strong>.`,
+          'GET',
+          url,
+          undefined,
+          data
+        );
+      } else {
+        mostrarFeedback(
+          false,
+          `No encontrado (${idLimpio})`,
+          status,
+          statusText,
+          `El servidor respondió que el turno no existe: <strong>${data.error || 'No encontrado'}</strong>.`,
+          'GET',
+          url,
+          undefined,
+          data
+        );
+      }
     }
 
     window.consultarPorId = consultarPorId;
@@ -683,9 +1144,33 @@
         prioritario: inputPrioritario.checked
       };
 
-      const { status } = await llamarApi('POST', '/api/turnos', payload);
+      const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
+
       if (status === 201) {
+        mostrarFeedback(
+          true,
+          `Turno #${data.id} creado`,
+          status,
+          statusText,
+          `Turno <strong>#${data.id}</strong> registrado para <strong>${data.nombreCliente}</strong>. Total calculado por el servidor: <strong>${formatearMoneda(data.totalPagar)}</strong> (${data.prioritario ? `incluye recargo del ${data.porcentajeRecargo}%` : 'sin recargo'}).`,
+          'POST',
+          '/api/turnos',
+          payload,
+          data
+        );
         await cargarTurnos(false);
+      } else {
+        mostrarFeedback(
+          false,
+          'Validación rechazada',
+          status,
+          statusText,
+          `El servidor rechazó los datos: <strong>${data.error || 'Datos inválidos'}</strong>.`,
+          'POST',
+          '/api/turnos',
+          payload,
+          data
+        );
       }
     });
 
@@ -696,7 +1181,7 @@
       establecerFechaPorDefecto();
       inputPrecio.value = '100000';
       inputPrioritario.checked = true;
-      actualizarVistaPrevia();
+      actualizarCalculo();
     });
 
     document.getElementById('btnEjemploNormal').addEventListener('click', () => {
@@ -706,25 +1191,55 @@
       establecerFechaPorDefecto();
       inputPrecio.value = '80000';
       inputPrioritario.checked = false;
-      actualizarVistaPrevia();
+      actualizarCalculo();
+    });
+
+    document.getElementById('btnLimpiar').addEventListener('click', () => {
+      formTurno.reset();
+      establecerFechaPorDefecto();
+      actualizarCalculo();
     });
 
     document.getElementById('btnErrorPrecio').addEventListener('click', async () => {
-      await llamarApi('POST', '/api/turnos', {
+      const payload = {
         nombreCliente: 'Pedro Ruiz',
         tipoServicio: 'Diagnóstico general',
         fechaHora: '2026-11-27T15:00',
         precioBase: 0,
         prioritario: true
-      });
+      };
+      const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
+      mostrarFeedback(
+        false,
+        'Error 400 (precio 0)',
+        status,
+        statusText,
+        `Validación correcta: el servidor bloqueó el registro con <strong>400 Bad Request</strong> — "${data.error}".`,
+        'POST',
+        '/api/turnos',
+        payload,
+        data
+      );
     });
 
     document.getElementById('btnErrorFaltante').addEventListener('click', async () => {
-      await llamarApi('POST', '/api/turnos', {
+      const payload = {
         tipoServicio: 'Diagnóstico general',
         fechaHora: '2026-11-27T15:00',
         precioBase: 60000
-      });
+      };
+      const { status, statusText, data } = await llamarApi('POST', '/api/turnos', payload);
+      mostrarFeedback(
+        false,
+        'Error 400 (faltante)',
+        status,
+        statusText,
+        `Validación correcta: el servidor bloqueó el registro con <strong>400 Bad Request</strong> — "${data.error}".`,
+        'POST',
+        '/api/turnos',
+        payload,
+        data
+      );
     });
 
     document.getElementById('btnBuscarId').addEventListener('click', () => {
@@ -739,11 +1254,11 @@
       cargarTurnos(true);
     });
 
-    inputPrecio.addEventListener('input', actualizarVistaPrevia);
-    inputPrioritario.addEventListener('change', actualizarVistaPrevia);
+    inputPrecio.addEventListener('input', actualizarCalculo);
+    inputPrioritario.addEventListener('change', actualizarCalculo);
 
     establecerFechaPorDefecto();
-    actualizarVistaPrevia();
+    actualizarCalculo();
     cargarTurnos(false);
   </script>
 </body>
