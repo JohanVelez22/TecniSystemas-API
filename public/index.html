@@ -342,6 +342,7 @@
     .bento-grid {
       display: grid;
       grid-template-columns: 1.06fr 0.96fr 0.98fr;
+      grid-template-rows: minmax(0, 1fr);
       gap: 12px;
       align-items: stretch;
       flex: 1;
@@ -351,6 +352,7 @@
     @media (max-width: 1140px) {
       .bento-grid {
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
         flex: none;
       }
     }
@@ -700,9 +702,9 @@
     .turnos-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       flex: 0 0 auto;
-      max-height: 496px;
+      max-height: 450px;
       overflow-y: auto;
       padding-right: 4px;
       scroll-snap-type: y mandatory;
@@ -712,10 +714,10 @@
       background: var(--card-sub-grad);
       border: 1px solid var(--border);
       border-radius: 9px;
-      padding: 8px 11px;
-      height: 76px;
-      min-height: 76px;
-      max-height: 76px;
+      padding: 6px 11px;
+      height: 70px;
+      min-height: 70px;
+      max-height: 70px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -770,6 +772,7 @@
     .turno-right {
       text-align: right;
       flex-shrink: 0;
+      line-height: 1.2;
     }
 
     .turno-total {
@@ -781,7 +784,11 @@
     .turno-base {
       font-size: 0.7rem;
       color: var(--text-muted);
-      margin-bottom: 5px;
+      margin-bottom: 3px;
+    }
+
+    .turno-card .btn-chip {
+      padding: 3px 8px;
     }
 
     .empty-state {
@@ -793,10 +800,10 @@
       font-size: 0.82rem;
     }
 
-    /* Columna 3: Inspector HTTP Dual (34% Request + 66% Response SIEMPRE visibles) */
+    /* Columna 3: Inspector HTTP Dual (50% Request + 50% Response SIEMPRE visibles) */
     .inspector-section {
       display: grid;
-      grid-template-rows: 34% minmax(0, 1fr);
+      grid-template-rows: repeat(2, minmax(0, 1fr));
       flex: 1;
       min-height: 0;
       gap: 10px;
@@ -804,7 +811,7 @@
 
     @media (max-width: 1140px) {
       .inspector-section {
-        grid-template-rows: 210px 320px;
+        grid-template-rows: 260px 260px;
       }
     }
 
@@ -1450,8 +1457,8 @@
     inputPrioritario.addEventListener('change', actualizarCalculo);
 
     // Ajuste matemático exacto del alto de la lista para mostrar solo tarjetas completas (máx. 6)
-    const CARD_HEIGHT = 76;
-    const CARD_GAP = 8;
+    const CARD_HEIGHT = 70;
+    const CARD_GAP = 6;
     const MAX_CARDS_VISIBLES = 6;
     const cardListaTurnos = listaTurnos.closest('.card');
 
