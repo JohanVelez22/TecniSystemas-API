@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TecniSystemas API — Panel de Pruebas REST</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --panel-2: #162033;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+    }
+
+    .badge.highlight {
+      border-color: var(--primary);
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.12);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .method {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .method.get { background: rgba(16, 185, 129, 0.18); color: #34d399; }
+    .method.post { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 560px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="datetime-local"],
+    textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--primary);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 68px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .checkbox-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .checkbox-row span {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .preview-box {
+      background: var(--panel-2);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.88rem;
+    }
+
+    .preview-total {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #34d399;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.08s, background 0.15s, opacity 0.15s;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: #334155;
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: #475569; }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.16);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.25); }
+
+    .btn-warn {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+    .btn-warn:hover { background: rgba(245, 158, 11, 0.25); }
+
+    .inline-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .inline-form input {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .status-pill {
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #334155;
+      color: #e2e8f0;
+    }
+
+    .status-2xx { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .status-4xx { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .status-5xx { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+    pre {
+      background: #0b1120;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      max-height: 290px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .inspector-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 10px 0 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .turnos-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .turno-item {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .turno-meta h4 {
+      font-size: 0.95rem;
+      margin-bottom: 3px;
+    }
+
+    .turno-meta p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .turno-price {
+      text-align: right;
+    }
+
+    .turno-price .total {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #34d399;
+    }
+
+    .tag-prio {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      margin-left: 6px;
+    }
+
+    .tag-prio.si { background: rgba(139, 92, 246, 0.22); color: #c4b5fd; }
+    .tag-prio.no { background: rgba(148, 163, 184, 0.16); color: #cbd5e1; }
+
+    .empty-state {
+      text-align: center;
+      color: var(--muted);
+      padding: 26px 12px;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .helper-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>TecniSystemas API — Panel Interactivo</h1>
+        <p>Servicio técnico y reparación de computadores · Arquitectura Cliente-Servidor (CIAF)</p>
+      </div>
+      <div class="badges">
+        <span class="badge">Grupo miércoles</span>
+        <span class="badge highlight">N = 4 (Combariza #4)</span>
+        <span class="badge highlight">Recargo prioritario: 8%</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- COLUMNA IZQUIERDA: OPERACIONES -->
+      <div>
+        <!-- PANEL 1: POST /api/turnos -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="method post">POST</span>
+              <span>/api/turnos — Registrar solicitud</span>
+            </div>
+          </div>
+
+          <form id="formTurno">
+            <div class="form-grid">
+              <div>
+                <label for="nombreCliente">Nombre del cliente *</label>
+                <input id="nombreCliente" type="text" placeholder="Ej. Laura Ríos" required />
+              </div>
+
+              <div>
+                <label for="tipoServicio">Tipo de servicio *</label>
+                <input id="tipoServicio" type="text" list="serviciosSugeridos" placeholder="Ej. Reparación de hardware" required />
+                <datalist id="serviciosSugeridos">
+                  <option value="Mantenimiento preventivo"></option>
+                  <option value="Reparación de hardware"></option>
+                  <option value="Diagnóstico general"></option>
+                  <option value="Formateo e instalación de SO"></option>
+                  <option value="Actualización de SSD y RAM"></option>
+                </datalist>
+              </div>
+
+              <div>
+                <label for="fechaHora">Fecha y hora de atención *</label>
+                <input id="fechaHora" type="datetime-local" required />
+              </div>
+
+              <div>
+                <label for="precioBase">Precio base (COP) *</label>
+                <input id="precioBase" type="number" step="any" placeholder="Ej. 100000" required />
+              </div>
+
+              <div class="full">
+                <label for="descripcion">Descripción (opcional)</label>
+                <textarea id="descripcion" placeholder="Detalle del problema del equipo..."></textarea>
+              </div>
+
+              <div class="full">
+                <label class="checkbox-row">
+                  <input id="prioritario" type="checkbox" />
+                  <span><strong>Atención prioritaria</strong> (el servidor aplicará el recargo oficial del 8%)</span>
+                </label>
+              </div>
+
+              <div class="full">
+                <div class="preview-box">
+                  <span id="previewFormula">Estimado: precioBase sin recargo (0%)</span>
+                  <span class="preview-total" id="previewTotal">$0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button type="submit" class="btn-primary">Enviar POST /api/turnos</button>
+              <button type="button" class="btn-secondary" id="btnEjemploPrioritario">Llenar prioritario ($100.000)</button>
+              <button type="button" class="btn-secondary" id="btnEjemploNormal">Llenar normal ($80.000)</button>
+            </div>
+            <div class="btn-row">
+              <button type="button" class="btn-warn" id="btnErrorPrecio">Probar 400 (precioBase = 0)</button>
+              <button type="button" class="btn-danger" id="btnErrorFaltante">Probar 400 (sin nombreCliente)</button>
+            </div>
+            <p class="helper-note">
+              El cálculo definitivo siempre lo ejecuta el servidor en <code>services/turnos.service.js</code>.
+            </p>
+          </form>
+        </section>
+
+        <!-- PANEL 2: GET /api/turnos/:id -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="method get">GET</span>
+              <span>/api/turnos/:id — Consultar por identificador</span>
+            </div>
+          </div>
+
+          <div class="inline-form">
+            <input id="buscarId" type="text" placeholder="Ingresa un ID (ej. 1)" />
+            <button type="button" class="btn-primary" id="btnBuscarId">Consultar ID</button>
+            <button type="button" class="btn-danger" id="btnProbar404">Probar 404 (ID 9999)</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- COLUMNA DERECHA: INSPECTOR HTTP Y LISTA -->
+      <div>
+        <!-- PANEL 3: INSPECTOR HTTP -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Inspector HTTP en Vivo</div>
+            <span class="status-pill" id="inspectorStatus">Sin peticiones aún</span>
+          </div>
+
+          <div class="inspector-label">Última petición</div>
+          <pre id="inspectorRequest">Haz clic en cualquier botón para ver aquí el método, la URL y el JSON enviado.</pre>
+
+          <div class="inspector-label">Respuesta JSON del servidor</div>
+          <pre id="inspectorResponse">{}</pre>
+        </section>
+
+        <!-- PANEL 4: GET /api/turnos -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="method get">GET</span>
+              <span>/api/turnos — Turnos guardados (<span id="contadorTurnos">0</span>)</span>
+            </div>
+            <button type="button" class="btn-secondary" id="btnRefrescar">Actualizar lista</button>
+          </div>
+
+          <div id="listaTurnos" class="turnos-list">
+            <div class="empty-state">Cargando turnos...</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PORCENTAJE_RECARGO = 8; // N = 4 -> 4 * 2 = 8%
+
+    const formTurno = document.getElementById('formTurno');
+    const inputNombre = document.getElementById('nombreCliente');
+    const inputServicio = document.getElementById('tipoServicio');
+    const inputFecha = document.getElementById('fechaHora');
+    const inputPrecio = document.getElementById('precioBase');
+    const inputDescripcion = document.getElementById('descripcion');
+    const inputPrioritario = document.getElementById('prioritario');
+    const previewFormula = document.getElementById('previewFormula');
+    const previewTotal = document.getElementById('previewTotal');
+
+    const inputBuscarId = document.getElementById('buscarId');
+    const listaTurnos = document.getElementById('listaTurnos');
+    const contadorTurnos = document.getElementById('contadorTurnos');
+
+    const inspectorStatus = document.getElementById('inspectorStatus');
+    const inspectorRequest = document.getElementById('inspectorRequest');
+    const inspectorResponse = document.getElementById('inspectorResponse');
+
+    // Fecha por defecto: mañana a las 10:00
+    function establecerFechaPorDefecto() {
+      const ahora = new Date();
+      ahora.setDate(ahora.getDate() + 1);
+      const yyyy = ahora.getFullYear();
+      const mm = String(ahora.getMonth() + 1).padStart(2, '0');
+      const dd = String(ahora.getDate()).padStart(2, '0');
+      inputFecha.value = `${yyyy}-${mm}-${dd}T10:00`;
+    }
+
+    function formatearMoneda(valor) {
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        maximumFractionDigits: 2
+      }).format(valor);
+    }
+
+    function actualizarVistaPrevia() {
+      const base = Number(inputPrecio.value);
+      const esPrio = inputPrioritario.checked;
+
+      if (!Number.isFinite(base) || base <= 0) {
+        previewFormula.textContent = 'Ingresa un precio base mayor que 0';
+        previewTotal.textContent = '$0';
+        return;
+      }
+
+      if (esPrio) {
+        const total = Math.round((base + base * (PORCENTAJE_RECARGO / 100)) * 100) / 100;
+        previewFormula.textContent = `Fórmula prioritaria: ${base} + (${base} × 8%)`;
+        previewTotal.textContent = formatearMoneda(total);
+      } else {
+        previewFormula.textContent = 'Sin recargo prioritario (0%)';
+        previewTotal.textContent = formatearMoneda(base);
+      }
+    }
+
+    function mostrarEnInspector(metodo, url, status, statusText, cuerpoEnviado, cuerpoRecibido) {
+      inspectorStatus.textContent = `HTTP ${status} ${statusText}`;
+      inspectorStatus.className = 'status-pill ' + (status >= 200 && status < 300 ? 'status-2xx' : status >= 400 && status < 500 ? 'status-4xx' : 'status-5xx');
+
+      const bloqueReq = cuerpoEnviado !== undefined
+        ? `${metodo} ${url}\n\n${JSON.stringify(cuerpoEnviado, null, 2)}`
+        : `${metodo} ${url}`;
+      inspectorRequest.textContent = bloqueReq;
+      inspectorResponse.textContent = JSON.stringify(cuerpoRecibido, null, 2);
+    }
+
+    async function llamarApi(metodo, url, cuerpo = undefined) {
+      const opciones = { method: metodo, headers: {} };
+      if (cuerpo !== undefined) {
+        opciones.headers['Content-Type'] = 'application/json';
+        opciones.body = JSON.stringify(cuerpo);
+      }
+
+      const res = await fetch(url, opciones);
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = { mensaje: 'Respuesta sin cuerpo JSON' };
+      }
+
+      mostrarEnInspector(metodo, url, res.status, res.statusText, cuerpo, data);
+      return { status: res.status, data };
+    }
+
+    function renderizarLista(turnos) {
+      contadorTurnos.textContent = String(turnos.length);
+
+      if (!Array.isArray(turnos) || turnos.length === 0) {
+        listaTurnos.innerHTML = '<div class="empty-state">No hay turnos registrados aún. Crea uno usando el formulario de la izquierda.</div>';
+        return;
+      }
+
+      listaTurnos.innerHTML = turnos.map((t) => `
+        <div class="turno-item">
+          <div class="turno-meta">
+            <h4>
+              #${t.id} — ${t.nombreCliente}
+              <span class="tag-prio ${t.prioritario ? 'si' : 'no'}">
+                ${t.prioritario ? `Prioritario +${t.porcentajeRecargo}%` : 'Normal 0%'}
+              </span>
+            </h4>
+            <p>${t.tipoServicio} · ${t.fechaHora}</p>
+            ${t.descripcion ? `<p>${t.descripcion}</p>` : ''}
+          </div>
+          <div class="turno-price">
+            <div class="total">${formatearMoneda(t.totalPagar)}</div>
+            <p style="font-size:0.78rem;color:#94a3b8;margin-bottom:6px;">Base: ${formatearMoneda(t.precioBase)}</p>
+            <button type="button" class="btn-secondary" style="padding:5px 10px;font-size:0.78rem;" onclick="consultarPorId(${t.id})">
+              Ver GET /${t.id}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function cargarTurnos(mostrarInspector = true) {
+      if (mostrarInspector) {
+        const { data } = await llamarApi('GET', '/api/turnos');
+        if (Array.isArray(data)) renderizarLista(data);
+      } else {
+        const res = await fetch('/api/turnos');
+        const data = await res.json();
+        if (Array.isArray(data)) renderizarLista(data);
+      }
+    }
+
+    async function consultarPorId(id) {
+      const idLimpio = String(id).trim();
+      if (!idLimpio) return;
+      inputBuscarId.value = idLimpio;
+      await llamarApi('GET', `/api/turnos/${encodeURIComponent(idLimpio)}`);
+    }
+
+    window.consultarPorId = consultarPorId;
+
+    formTurno.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        nombreCliente: inputNombre.value,
+        tipoServicio: inputServicio.value,
+        descripcion: inputDescripcion.value,
+        fechaHora: inputFecha.value,
+        precioBase: Number(inputPrecio.value),
+        prioritario: inputPrioritario.checked
+      };
+
+      const { status } = await llamarApi('POST', '/api/turnos', payload);
+      if (status === 201) {
+        await cargarTurnos(false);
+      }
+    });
+
+    document.getElementById('btnEjemploPrioritario').addEventListener('click', () => {
+      inputNombre.value = 'Laura Ríos';
+      inputServicio.value = 'Reparación de hardware';
+      inputDescripcion.value = 'Cambio de pantalla urgente';
+      establecerFechaPorDefecto();
+      inputPrecio.value = '100000';
+      inputPrioritario.checked = true;
+      actualizarVistaPrevia();
+    });
+
+    document.getElementById('btnEjemploNormal').addEventListener('click', () => {
+      inputNombre.value = 'Carlos Mendoza';
+      inputServicio.value = 'Mantenimiento preventivo';
+      inputDescripcion.value = 'Limpieza interna y pasta térmica';
+      establecerFechaPorDefecto();
+      inputPrecio.value = '80000';
+      inputPrioritario.checked = false;
+      actualizarVistaPrevia();
+    });
+
+    document.getElementById('btnErrorPrecio').addEventListener('click', async () => {
+      await llamarApi('POST', '/api/turnos', {
+        nombreCliente: 'Pedro Ruiz',
+        tipoServicio: 'Diagnóstico general',
+        fechaHora: '2026-11-27T15:00',
+        precioBase: 0,
+        prioritario: true
+      });
+    });
+
+    document.getElementById('btnErrorFaltante').addEventListener('click', async () => {
+      await llamarApi('POST', '/api/turnos', {
+        tipoServicio: 'Diagnóstico general',
+        fechaHora: '2026-11-27T15:00',
+        precioBase: 60000
+      });
+    });
+
+    document.getElementById('btnBuscarId').addEventListener('click', () => {
+      consultarPorId(inputBuscarId.value || '1');
+    });
+
+    document.getElementById('btnProbar404').addEventListener('click', () => {
+      consultarPorId('9999');
+    });
+
+    document.getElementById('btnRefrescar').addEventListener('click', () => {
+      cargarTurnos(true);
+    });
+
+    inputPrecio.addEventListener('input', actualizarVistaPrevia);
+    inputPrioritario.addEventListener('change', actualizarVistaPrevia);
+
+    establecerFechaPorDefecto();
+    actualizarVistaPrevia();
+    cargarTurnos(false);
+  </script>
+</body>
+</html>

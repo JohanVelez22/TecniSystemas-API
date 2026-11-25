@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const turnosRoutes = require('./routes/turnos.routes');
 
@@ -6,6 +7,9 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware para interpretar cuerpos JSON
 app.use(express.json());
+
+// Interfaz web interactiva para probar la API desde el navegador
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Control de JSON mal formado en el cuerpo de la petición
 app.use((err, req, res, next) => {
