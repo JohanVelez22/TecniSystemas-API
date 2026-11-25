@@ -922,7 +922,7 @@
 
               <div>
                 <label class="field-label" for="precioBase">Precio base (COP) *</label>
-                <input id="precioBase" type="number" step="any" placeholder="Ej. 100000" />
+                <input id="precioBase" type="text" inputmode="numeric" autocomplete="off" placeholder="Ej. 100.000" />
               </div>
 
               <div class="full">
@@ -1139,14 +1139,31 @@
       }).format(valor);
     }
 
+    function parsearPrecioBase(texto) {
+      const limpio = String(texto ?? '').replace(/\./g, '').replace(/\s+/g, '');
+      if (limpio === '' || limpio === '-') return null;
+      const numero = Number(limpio);
+      return Number.isFinite(numero) ? numero : NaN;
+    }
+
+    function formatearMilesInput(valor) {
+      const texto = String(valor ?? '');
+      const esNegativo = texto.trim().startsWith('-');
+      const soloDigitos = texto.replace(/\D/g, '');
+      if (!soloDigitos) return esNegativo ? '-' : '';
+      const sinCerosIzquierda = soloDigitos.replace(/^0+(?=\d)/, '');
+      const conPuntos = sinCerosIzquierda.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      return esNegativo ? `-${conPuntos}` : conPuntos;
+    }
+
     function actualizarCalculo() {
-      const base = Number(inputPrecio.value);
+      const base = parsearPrecioBase(inputPrecio.value);
       const esPrio = inputPrioritario.checked;
 
       priorityBox.classList.toggle('active', esPrio);
       priorityPill.textContent = esPrio ? `+${PORCENTAJE_RECARGO}%` : '0%';
 
-      if (!Number.isFinite(base) || base <= 0) {
+      if (base === null || !Number.isFinite(base) || base <= 0) {
         calcDetail.textContent = 'Base: $0 · Recargo: $0';
         calcTotal.textContent = 'Total: $0';
         return;
@@ -1227,11 +1244,11 @@
       `).join('');
     }
 
-    async function cargarTurnos(actualizarBanner = true) {
+    async function cargarTurnos(actualizarInspector = true) {
       const { status, statusText, duracionMs, data } = await llamarApi('GET', '/api/turnos');
       if (Array.isArray(data)) renderizarLista(data);
 
-      if (actualizarBanner) {
+      if (actualizarInspector) {
         limpiarErroresVisuales();
         mostrarResultado(
           status === 200,
@@ -1244,11 +1261,6 @@
           undefined,
           data
         );
-      } else {
-        requestEndpointMeta.textContent = 'GET /api/turnos';
-        responseTimeMeta.textContent = `${duracionMs} ms · JSON`;
-        inspectorRequest.textContent = 'GET /api/turnos';
-        inspectorResponse.textContent = JSON.stringify(data, null, 2);
       }
     }
 
@@ -1293,12 +1305,13 @@
 
     async function enviarFormularioActual() {
       limpiarErroresVisuales();
+      const precioNumerico = parsearPrecioBase(inputPrecio.value);
       const payload = {
         nombreCliente: inputNombre.value,
         tipoServicio: inputServicio.value,
         descripcion: inputDescripcion.value,
         fechaHora: inputFecha.value,
-        precioBase: inputPrecio.value === '' ? null : Number(inputPrecio.value),
+        precioBase: precioNumerico,
         prioritario: inputPrioritario.checked
       };
 
@@ -1345,7 +1358,7 @@
       inputServicio.value = 'Reparación de hardware';
       inputDescripcion.value = 'Cambio de pantalla urgente';
       establecerFechaPorDefecto();
-      inputPrecio.value = '100000';
+      inputPrecio.value = '100.000';
       inputPrioritario.checked = true;
       actualizarCalculo();
     });
@@ -1356,7 +1369,7 @@
       inputServicio.value = 'Mantenimiento preventivo';
       inputDescripcion.value = 'Limpieza interna y pasta térmica';
       establecerFechaPorDefecto();
-      inputPrecio.value = '80000';
+      inputPrecio.value = '80.000';
       inputPrioritario.checked = false;
       actualizarCalculo();
     });
@@ -1377,7 +1390,7 @@
       inputServicio.value = 'Diagnóstico general';
       inputDescripcion.value = 'Prueba de validación sin nombre de cliente';
       establecerFechaPorDefecto();
-      inputPrecio.value = '60000';
+      inputPrecio.value = '60.000';
       inputPrioritario.checked = false;
       actualizarCalculo();
       await enviarFormularioActual();
@@ -1413,12 +1426,18 @@
       inputBuscarId.classList.remove('field-error');
     });
 
-    inputPrecio.addEventListener('input', actualizarCalculo);
+    inputPrecio.addEventListener('input', () => {
+      inputPrecio.value = formatearMilesInput(inputPrecio.value);
+      actualizarCalculo();
+    });
     inputPrioritario.addEventListener('change', actualizarCalculo);
 
     establecerFechaPorDefecto();
     actualizarCalculo();
-    cargarTurnos(false);
+    cargarTurnos(false).then(() => {
+      inspectorRequest.textContent = 'Esperando una acción (POST /api/turnos o GET /api/turnos/:id)';
+      inspectorResponse.textContent = '{\n  "info": "Registra un turno o haz clic en Ver detalle para inspeccionar su JSON"\n}';
+    });
   </script>
 </body>
 </html>
