@@ -12,7 +12,7 @@
     [data-theme="light"] {
       color-scheme: light;
       --bg-grad: linear-gradient(135deg, #edf2f7 0%, #e3eaf4 55%, #e8eef7 100%);
-      --topbar-grad: linear-gradient(90deg, #1b2842 0%, #243656 100%);
+      --topbar-grad: linear-gradient(90deg, #162238 0%, #1f3150 100%);
       --card-grad: linear-gradient(160deg, #ffffff 0%, #f5f8fc 100%);
       --card-sub-grad: linear-gradient(160deg, #f6f9fd 0%, #edf2f8 100%);
       --input-grad: linear-gradient(180deg, #f7f9fc 0%, #ffffff 100%);
@@ -48,16 +48,16 @@
       --amber-border: #ecd08c;
       --amber-pill: #cf7f14;
 
-      /* Rojo suave -> Errores HTTP / Limpiar */
+      /* Rojo suave -> Errores HTTP */
       --red: #c23b3b;
       --red-soft: linear-gradient(180deg, #fdf2f2 0%, #fbe5e5 100%);
       --red-soft-hover: linear-gradient(180deg, #fbe5e5 0%, #f7d4d4 100%);
       --red-border: #efbaba;
       --red-text: #942626;
 
-      /* Neutro limpio -> Limpiar / Tab inactivo */
-      --clear-bg: linear-gradient(180deg, #f8f5f6 0%, #f1e9eb 100%);
-      --clear-hover: linear-gradient(180deg, #f1e9eb 0%, #e8dce0 100%);
+      /* Neutro sutil -> Limpiar */
+      --clear-bg: linear-gradient(180deg, #f8f4f5 0%, #f1e8ea 100%);
+      --clear-hover: linear-gradient(180deg, #f1e8ea 0%, #e8dbe0 100%);
       --clear-border: #dccbd0;
       --clear-text: #7a4b55;
     }
@@ -65,7 +65,7 @@
     [data-theme="dark"] {
       color-scheme: dark;
       --bg-grad: linear-gradient(135deg, #121a28 0%, #172234 55%, #131d2d 100%);
-      --topbar-grad: linear-gradient(90deg, #0e1522 0%, #172338 100%);
+      --topbar-grad: linear-gradient(90deg, #0d1421 0%, #162236 100%);
       --card-grad: linear-gradient(160deg, #1e2a3d 0%, #182233 100%);
       --card-sub-grad: linear-gradient(160deg, #192436 0%, #141d2c 100%);
       --input-grad: linear-gradient(180deg, #131c2b 0%, #192437 100%);
@@ -116,7 +116,6 @@
       padding: 0;
     }
 
-    /* Scrollbars sutiles coherentes con el tema */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -161,12 +160,12 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
     }
 
     .brand-icon {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 9px;
       background: var(--blue-grad);
       display: grid;
@@ -175,17 +174,25 @@
       font-size: 0.92rem;
       color: #fff;
       box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+      flex-shrink: 0;
     }
 
     .brand h1 {
-      font-size: 1.05rem;
+      font-size: 1.04rem;
       font-weight: 700;
       line-height: 1.2;
+      letter-spacing: -0.01em;
     }
 
     .brand p {
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       color: #a9bbd4;
+      margin-top: 2px;
+    }
+
+    .brand p strong {
+      color: #dbe8f8;
+      font-weight: 600;
     }
 
     .topbar-meta {
@@ -196,7 +203,7 @@
     }
 
     .meta-chip {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 600;
       padding: 5px 10px;
       border-radius: 999px;
@@ -221,25 +228,29 @@
       background: #38b889;
     }
 
-    /* Botón circular solo icono para tema */
+    /* Botón circular minimalista con SVG vectorial */
     .theme-toggle {
       width: 34px;
       height: 34px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 1rem;
-      line-height: 1;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.11);
       border: 1px solid rgba(255, 255, 255, 0.22);
-      color: #ffffff;
+      color: #e2ecf8;
       cursor: pointer;
       transition: background 0.15s, transform 0.12s;
     }
 
     .theme-toggle:hover {
-      background: rgba(255, 255, 255, 0.22);
-      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.04);
+    }
+
+    .theme-toggle svg {
+      width: 17px;
+      height: 17px;
+      display: block;
     }
 
     .workspace {
@@ -253,7 +264,7 @@
       gap: 12px;
     }
 
-    /* Banner compacto de feedback humano */
+    /* Banner compacto de feedback */
     .feedback-bar {
       display: flex;
       align-items: center;
@@ -265,7 +276,7 @@
       background: var(--card-grad);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
 
     .feedback-bar.ok {
@@ -282,7 +293,7 @@
 
     .http-badge {
       font-family: 'Cascadia Code', Consolas, monospace;
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 700;
       padding: 3px 10px;
       border-radius: 999px;
@@ -304,7 +315,7 @@
       color: #ffffff;
     }
 
-    /* Grid de 3 columnas */
+    /* Grid de 3 columnas balanceadas */
     .bento-grid {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr 1fr;
@@ -354,7 +365,7 @@
       margin-bottom: 10px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--border);
-      min-height: 36px;
+      min-height: 35px;
     }
 
     .step-title {
@@ -369,7 +380,7 @@
       border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -379,7 +390,7 @@
     .step-num.red { background: var(--red-soft); color: var(--red); border: 1px solid var(--red-border); }
 
     .card-header h2 {
-      font-size: 0.94rem;
+      font-size: 0.93rem;
       font-weight: 700;
       color: var(--text);
     }
@@ -388,7 +399,7 @@
       font-family: 'Cascadia Code', Consolas, monospace;
       font-size: 0.7rem;
       font-weight: 700;
-      padding: 3px 7px;
+      padding: 3px 8px;
       border-radius: 6px;
       white-space: nowrap;
     }
@@ -396,27 +407,27 @@
     .endpoint-chip.post { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
     .endpoint-chip.get { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
 
-    /* Barra de ejemplos con botones semánticos */
+    /* Barra de ejemplos en UNA SOLA FILA perfectamente alineada */
     .quick-bar {
-      display: flex;
+      display: grid;
+      grid-template-columns: auto 1fr 1fr auto;
       align-items: center;
-      flex-wrap: wrap;
       gap: 6px;
       padding: 7px 9px;
       background: var(--card-sub-grad);
       border: 1px solid var(--border);
       border-radius: 9px;
-      margin-bottom: 10px;
+      margin-bottom: 11px;
     }
 
     .quick-label {
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-right: 2px;
+      padding-right: 2px;
+      white-space: nowrap;
     }
 
-    /* Botones suaves con color semántico */
     button {
       font-family: inherit;
       font-weight: 600;
@@ -430,11 +441,12 @@
     }
 
     .btn-chip {
-      padding: 5px 10px;
+      padding: 6px 10px;
       font-size: 0.75rem;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      white-space: nowrap;
     }
 
     .btn-chip.amber {
@@ -466,10 +478,16 @@
     .btn-chip.clear:hover { background: var(--clear-hover); }
 
     /* Formulario */
+    form#formTurno {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 9px;
+      gap: 10px;
     }
 
     .full {
@@ -478,10 +496,10 @@
 
     label.field-label {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     input[type="text"],
@@ -508,7 +526,7 @@
 
     textarea {
       resize: none;
-      height: 48px;
+      height: 50px;
     }
 
     /* Tarjeta de atención prioritaria */
@@ -517,7 +535,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 8px 11px;
+      padding: 9px 11px;
       border-radius: 9px;
       border: 1px solid var(--border-strong);
       background: var(--card-sub-grad);
@@ -533,7 +551,7 @@
     .priority-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
     }
 
     .priority-left input {
@@ -574,7 +592,7 @@
       background: var(--card-sub-grad);
       border: 1px solid var(--border);
       border-radius: 9px;
-      padding: 8px 11px;
+      padding: 9px 11px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -594,21 +612,25 @@
     }
 
     /* Botones principales sólidos */
+    .submit-wrap {
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
     .btn-primary-blue {
       width: 100%;
-      padding: 10px 14px;
+      padding: 11px 14px;
       font-size: 0.88rem;
       background: var(--blue-grad);
       color: #ffffff;
       border: none;
-      margin-top: 10px;
       box-shadow: 0 2px 8px rgba(43, 108, 176, 0.25);
     }
 
     .btn-primary-blue:hover { filter: brightness(1.07); }
 
     .btn-primary-green {
-      padding: 8px 14px;
+      padding: 8px 15px;
       font-size: 0.84rem;
       background: var(--green-grad);
       color: #ffffff;
@@ -625,12 +647,12 @@
       gap: 8px;
     }
 
-    /* Lista de turnos */
+    /* Lista de turnos con altura equilibrada */
     .turnos-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 360px;
+      max-height: 345px;
       overflow-y: auto;
       padding-right: 3px;
     }
@@ -651,7 +673,7 @@
     }
 
     .turno-info h4 {
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -660,17 +682,17 @@
     }
 
     .turno-info p {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--text-secondary);
       margin-top: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 240px;
+      max-width: 235px;
     }
 
     .id-badge {
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       font-weight: 700;
       background: var(--blue-soft);
       color: var(--blue);
@@ -695,7 +717,7 @@
     }
 
     .turno-total {
-      font-size: 0.9rem;
+      font-size: 0.89rem;
       font-weight: 800;
       color: var(--green);
     }
@@ -746,7 +768,7 @@
       font-size: 0.76rem;
       color: var(--code-text);
       overflow: auto;
-      height: 225px;
+      height: 222px;
       white-space: pre-wrap;
       word-break: break-word;
     }
@@ -765,7 +787,7 @@
     .btn-error-test {
       width: 100%;
       text-align: left;
-      padding: 8px 10px;
+      padding: 8px 11px;
       background: var(--red-soft);
       border: 1px solid var(--red-border);
       color: var(--red-text);
@@ -806,7 +828,10 @@
         <div class="brand-icon">TS</div>
         <div>
           <h1>TecniSystemas · Gestión de Turnos</h1>
-          <p>API REST por Capas · Grupo miércoles · Combariza (#4)</p>
+          <p>
+            <strong>Grupo miércoles:</strong>
+            Valentina Combariza Garcia (#4) · Johan Alexander Velez Cardona (#19) · Santiago Zapata Morales (#21)
+          </p>
         </div>
       </div>
 
@@ -820,7 +845,7 @@
           id="btnTheme"
           title="Cambiar tema"
           aria-label="Cambiar tema"
-        >🌙</button>
+        ></button>
       </div>
     </div>
   </header>
@@ -829,12 +854,12 @@
     <!-- Resumen humano en una línea -->
     <section id="feedbackBar" class="feedback-bar">
       <div id="feedbackText">
-        Listo para probar: usa el <strong>Paso 1</strong> para crear un turno, el <strong>Paso 2</strong> para buscar por ID o el <strong>Simulador</strong> para probar errores.
+        Panel listo: registra un turno en el <strong>Paso 1</strong>, consulta por ID en el <strong>Paso 2</strong> o valida errores HTTP en el panel derecho.
       </div>
       <span id="feedbackBadge" class="http-badge">HTTP 200 OK</span>
     </section>
 
-    <!-- Dashboard 3 columnas: todo a la vista -->
+    <!-- Dashboard 3 columnas -->
     <div class="bento-grid">
       <!-- COLUMNA 1: CREAR TURNO -->
       <div class="col">
@@ -849,9 +874,9 @@
 
           <div class="quick-bar">
             <span class="quick-label">Ejemplos:</span>
-            <button type="button" class="btn-chip amber" id="btnEjemploPrioritario">⚡ Prioritario ($100.000)</button>
-            <button type="button" class="btn-chip blue" id="btnEjemploNormal">✓ Normal ($80.000)</button>
-            <button type="button" class="btn-chip clear" id="btnLimpiar">✕ Limpiar</button>
+            <button type="button" class="btn-chip amber" id="btnEjemploPrioritario">Prioritario ($100k)</button>
+            <button type="button" class="btn-chip blue" id="btnEjemploNormal">Normal ($80k)</button>
+            <button type="button" class="btn-chip clear" id="btnLimpiar">Limpiar</button>
           </div>
 
           <form id="formTurno">
@@ -909,7 +934,9 @@
               </div>
             </div>
 
-            <button type="submit" class="btn-primary-blue">Registrar turno (POST /api/turnos)</button>
+            <div class="submit-wrap">
+              <button type="submit" class="btn-primary-blue">Registrar turno (POST /api/turnos)</button>
+            </div>
           </form>
         </section>
       </div>
@@ -939,7 +966,7 @@
             </div>
             <div style="display:flex;align-items:center;gap:6px;">
               <span class="endpoint-chip get">GET /api/turnos</span>
-              <button type="button" class="btn-chip green" id="btnRefrescar">↻ Actualizar</button>
+              <button type="button" class="btn-chip green" id="btnRefrescar">Actualizar</button>
             </div>
           </div>
 
@@ -1010,8 +1037,11 @@
   <script>
     const PORCENTAJE_RECARGO = 8; // N = 4 -> 4 * 2 = 8%
 
+    const ICONO_LUNA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    const ICONO_SOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+
     // =========================================================
-    // CONTROL DE TEMA (SOLO ICONO 🌙 / ☀️)
+    // CONTROL DE TEMA (ICONO VECTORIAL SVG)
     // =========================================================
     const htmlRoot = document.documentElement;
     const btnTheme = document.getElementById('btnTheme');
@@ -1020,13 +1050,13 @@
       htmlRoot.setAttribute('data-theme', tema);
       localStorage.setItem('tecnisystemas-theme', tema);
       if (tema === 'dark') {
-        btnTheme.textContent = '☀️';
-        btnTheme.title = 'Cambiar a modo claro';
-        btnTheme.setAttribute('aria-label', 'Cambiar a modo claro');
+        btnTheme.innerHTML = ICONO_SOL;
+        btnTheme.title = 'Cambiar a tema claro';
+        btnTheme.setAttribute('aria-label', 'Cambiar a tema claro');
       } else {
-        btnTheme.textContent = '🌙';
-        btnTheme.title = 'Cambiar a modo oscuro';
-        btnTheme.setAttribute('aria-label', 'Cambiar a modo oscuro');
+        btnTheme.innerHTML = ICONO_LUNA;
+        btnTheme.title = 'Cambiar a tema oscuro';
+        btnTheme.setAttribute('aria-label', 'Cambiar a tema oscuro');
       }
     }
 
@@ -1176,7 +1206,7 @@
               <span class="id-badge">#${escaparHtml(t.id)}</span>
               ${escaparHtml(t.nombreCliente)}
               <span class="prio-badge ${t.prioritario ? 'si' : 'no'}">
-                ${t.prioritario ? `⚡ Prioritario +${t.porcentajeRecargo}%` : 'Normal'}
+                ${t.prioritario ? `Prioritario +${t.porcentajeRecargo}%` : 'Normal'}
               </span>
             </h4>
             <p>${escaparHtml(t.tipoServicio)} · ${escaparHtml(String(t.fechaHora).replace('T', ' '))}</p>
