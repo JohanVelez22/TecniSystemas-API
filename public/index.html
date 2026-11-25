@@ -6,10 +6,11 @@
   <title>TecniSystemas — Panel API REST</title>
   <style>
     /* =====================================================================
-       SISTEMA DE TEMAS (CLARO / OSCURO) — CONTRASTE SUAVE Y DESCANSO VISUAL
+       SISTEMA DE TEMAS (CLARO / OSCURO) — CONTRASTE SUAVE PARA EXPOSICIÓN
        ===================================================================== */
     :root,
     [data-theme="light"] {
+      color-scheme: light;
       --bg-grad: linear-gradient(135deg, #edf2f7 0%, #e3eaf4 55%, #e8eef7 100%);
       --topbar-grad: linear-gradient(90deg, #1b2842 0%, #243656 100%);
       --card-grad: linear-gradient(160deg, #ffffff 0%, #f5f8fc 100%);
@@ -17,6 +18,7 @@
       --input-grad: linear-gradient(180deg, #f7f9fc 0%, #ffffff 100%);
       --code-bg: linear-gradient(180deg, #f1f5fa 0%, #e9eff7 100%);
       --code-text: #1e293b;
+      --scroll-thumb: #c3d0e0;
 
       --border: #d8e2ee;
       --border-strong: #c2d0e2;
@@ -25,35 +27,43 @@
       --text-muted: #697b94;
       --shadow: 0 2px 6px rgba(24, 36, 54, 0.05), 0 8px 20px rgba(24, 36, 54, 0.04);
 
-      /* Colores semánticos (fáciles de distinguir sin fatiga visual) */
-      --blue: #2b6cb0;
-      --blue-hover: #215794;
+      /* Azul -> Crear / POST / Normal */
+      --blue: #2563a8;
       --blue-grad: linear-gradient(135deg, #3178c6 0%, #245ea1 100%);
-      --blue-soft: #ebf3fc;
+      --blue-soft: linear-gradient(180deg, #eff6ff 0%, #e2eefc 100%);
+      --blue-soft-hover: linear-gradient(180deg, #e2eefc 0%, #d2e4fa 100%);
       --blue-border: #bfd6f4;
 
-      --green: #16805c;
-      --green-hover: #11684a;
+      /* Verde -> Consultar / GET / Éxito */
+      --green: #147a57;
       --green-grad: linear-gradient(135deg, #1b936a 0%, #147453 100%);
-      --green-soft: #eaf7f1;
+      --green-soft: linear-gradient(180deg, #ecfaf4 0%, #dff5eb 100%);
+      --green-soft-hover: linear-gradient(180deg, #dff5eb 0%, #ceeee0 100%);
       --green-border: #b3e2ce;
 
-      --amber: #b86e0c;
-      --amber-soft: linear-gradient(135deg, #fef9eb 0%, #fdf2d6 100%);
-      --amber-border: #efd291;
-      --amber-pill: #d28114;
+      /* Ámbar -> Prioritario +8% */
+      --amber: #a86208;
+      --amber-soft: linear-gradient(180deg, #fef9eb 0%, #fcf0d0 100%);
+      --amber-soft-hover: linear-gradient(180deg, #fcf0d0 0%, #f9e4b2 100%);
+      --amber-border: #ecd08c;
+      --amber-pill: #cf7f14;
 
+      /* Rojo suave -> Errores HTTP / Limpiar */
       --red: #c23b3b;
-      --red-soft: linear-gradient(135deg, #fdf2f2 0%, #fbe6e6 100%);
-      --red-soft-hover: linear-gradient(135deg, #fbe5e5 0%, #f8d6d6 100%);
-      --red-border: #f0bcbc;
-      --red-text: #8f2424;
+      --red-soft: linear-gradient(180deg, #fdf2f2 0%, #fbe5e5 100%);
+      --red-soft-hover: linear-gradient(180deg, #fbe5e5 0%, #f7d4d4 100%);
+      --red-border: #efbaba;
+      --red-text: #942626;
 
-      --btn-neutral-bg: linear-gradient(180deg, #ffffff 0%, #f1f5fa 100%);
-      --btn-neutral-hover: linear-gradient(180deg, #f1f5fa 0%, #e4ebf4 100%);
+      /* Neutro limpio -> Limpiar / Tab inactivo */
+      --clear-bg: linear-gradient(180deg, #f8f5f6 0%, #f1e9eb 100%);
+      --clear-hover: linear-gradient(180deg, #f1e9eb 0%, #e8dce0 100%);
+      --clear-border: #dccbd0;
+      --clear-text: #7a4b55;
     }
 
     [data-theme="dark"] {
+      color-scheme: dark;
       --bg-grad: linear-gradient(135deg, #121a28 0%, #172234 55%, #131d2d 100%);
       --topbar-grad: linear-gradient(90deg, #0e1522 0%, #172338 100%);
       --card-grad: linear-gradient(160deg, #1e2a3d 0%, #182233 100%);
@@ -61,6 +71,7 @@
       --input-grad: linear-gradient(180deg, #131c2b 0%, #192437 100%);
       --code-bg: linear-gradient(180deg, #101826 0%, #0d1420 100%);
       --code-text: #d6e4f5;
+      --scroll-thumb: #394c68;
 
       --border: #2c3b52;
       --border-strong: #3b4e6b;
@@ -69,37 +80,53 @@
       --text-muted: #8496b2;
       --shadow: 0 2px 8px rgba(4, 9, 18, 0.35), 0 10px 24px rgba(4, 9, 18, 0.25);
 
-      --blue: #5b9cf0;
-      --blue-hover: #4789e0;
+      --blue: #7ab3f5;
       --blue-grad: linear-gradient(135deg, #3b82d6 0%, #2b6cb8 100%);
-      --blue-soft: rgba(91, 156, 240, 0.14);
-      --blue-border: rgba(91, 156, 240, 0.35);
+      --blue-soft: linear-gradient(180deg, rgba(91, 156, 240, 0.2) 0%, rgba(91, 156, 240, 0.12) 100%);
+      --blue-soft-hover: linear-gradient(180deg, rgba(91, 156, 240, 0.28) 0%, rgba(91, 156, 240, 0.18) 100%);
+      --blue-border: rgba(122, 179, 245, 0.38);
 
-      --green: #38b889;
-      --green-hover: #2da176;
+      --green: #4cd09d;
       --green-grad: linear-gradient(135deg, #259c72 0%, #1c7d5b 100%);
-      --green-soft: rgba(56, 184, 137, 0.14);
-      --green-border: rgba(56, 184, 137, 0.35);
+      --green-soft: linear-gradient(180deg, rgba(56, 184, 137, 0.2) 0%, rgba(56, 184, 137, 0.12) 100%);
+      --green-soft-hover: linear-gradient(180deg, rgba(56, 184, 137, 0.28) 0%, rgba(56, 184, 137, 0.18) 100%);
+      --green-border: rgba(76, 208, 157, 0.38);
 
-      --amber: #eab04a;
-      --amber-soft: linear-gradient(135deg, rgba(234, 176, 74, 0.16) 0%, rgba(210, 145, 42, 0.1) 100%);
-      --amber-border: rgba(234, 176, 74, 0.42);
+      --amber: #f0bc5e;
+      --amber-soft: linear-gradient(180deg, rgba(234, 176, 74, 0.22) 0%, rgba(210, 145, 42, 0.12) 100%);
+      --amber-soft-hover: linear-gradient(180deg, rgba(234, 176, 74, 0.3) 0%, rgba(210, 145, 42, 0.2) 100%);
+      --amber-border: rgba(240, 188, 94, 0.42);
       --amber-pill: #d49022;
 
       --red: #e56b6b;
-      --red-soft: linear-gradient(135deg, rgba(229, 107, 107, 0.15) 0%, rgba(196, 75, 75, 0.1) 100%);
-      --red-soft-hover: linear-gradient(135deg, rgba(229, 107, 107, 0.24) 0%, rgba(196, 75, 75, 0.17) 100%);
-      --red-border: rgba(229, 107, 107, 0.38);
-      --red-text: #f6b2b2;
+      --red-soft: linear-gradient(180deg, rgba(229, 107, 107, 0.2) 0%, rgba(196, 75, 75, 0.12) 100%);
+      --red-soft-hover: linear-gradient(180deg, rgba(229, 107, 107, 0.28) 0%, rgba(196, 75, 75, 0.18) 100%);
+      --red-border: rgba(229, 107, 107, 0.4);
+      --red-text: #f7b8b8;
 
-      --btn-neutral-bg: linear-gradient(180deg, #24334a 0%, #1c283b 100%);
-      --btn-neutral-hover: linear-gradient(180deg, #2d3f5b 0%, #24334a 100%);
+      --clear-bg: linear-gradient(180deg, rgba(164, 130, 140, 0.2) 0%, rgba(135, 105, 115, 0.12) 100%);
+      --clear-hover: linear-gradient(180deg, rgba(164, 130, 140, 0.28) 0%, rgba(135, 105, 115, 0.2) 100%);
+      --clear-border: rgba(185, 148, 158, 0.35);
+      --clear-text: #d8b8c1;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    /* Scrollbars sutiles coherentes con el tema */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--scroll-thumb);
+      border-radius: 999px;
     }
 
     body {
@@ -113,7 +140,7 @@
       transition: background 0.2s ease, color 0.2s ease;
     }
 
-    /* Barra superior compacta */
+    /* Barra superior */
     .topbar {
       background: var(--topbar-grad);
       color: #f1f5f9;
@@ -194,26 +221,27 @@
       background: #38b889;
     }
 
+    /* Botón circular solo icono para tema */
     .theme-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #f8fafc;
-      background: rgba(255, 255, 255, 0.13);
-      border: 1px solid rgba(255, 255, 255, 0.24);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      line-height: 1;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #ffffff;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s, transform 0.12s;
     }
 
     .theme-toggle:hover {
       background: rgba(255, 255, 255, 0.22);
+      transform: scale(1.05);
     }
 
-    /* Contenedor principal pensado para caber en 1 pantalla */
     .workspace {
       max-width: 1420px;
       width: 100%;
@@ -276,7 +304,7 @@
       color: #ffffff;
     }
 
-    /* Grid de 3 columnas para ver TODO al mismo tiempo */
+    /* Grid de 3 columnas */
     .bento-grid {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr 1fr;
@@ -304,7 +332,6 @@
       min-width: 0;
     }
 
-    /* Tarjetas con degradado sutil */
     .card {
       background: var(--card-grad);
       border: 1px solid var(--border);
@@ -327,6 +354,7 @@
       margin-bottom: 10px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--border);
+      min-height: 36px;
     }
 
     .step-title {
@@ -351,7 +379,7 @@
     .step-num.red { background: var(--red-soft); color: var(--red); border: 1px solid var(--red-border); }
 
     .card-header h2 {
-      font-size: 0.95rem;
+      font-size: 0.94rem;
       font-weight: 700;
       color: var(--text);
     }
@@ -368,7 +396,7 @@
     .endpoint-chip.post { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
     .endpoint-chip.get { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
 
-    /* Barra de ejemplos */
+    /* Barra de ejemplos con botones semánticos */
     .quick-bar {
       display: flex;
       align-items: center;
@@ -385,9 +413,59 @@
       font-size: 0.74rem;
       font-weight: 600;
       color: var(--text-muted);
+      margin-right: 2px;
     }
 
-    /* Formulario compacto con inputs degradados */
+    /* Botones suaves con color semántico */
+    button {
+      font-family: inherit;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: filter 0.15s, transform 0.06s, background 0.15s, border-color 0.15s;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-chip {
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-chip.amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+    }
+    .btn-chip.amber:hover { background: var(--amber-soft-hover); }
+
+    .btn-chip.blue {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid var(--blue-border);
+    }
+    .btn-chip.blue:hover { background: var(--blue-soft-hover); }
+
+    .btn-chip.green {
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid var(--green-border);
+    }
+    .btn-chip.green:hover { background: var(--green-soft-hover); }
+
+    .btn-chip.clear {
+      background: var(--clear-bg);
+      color: var(--clear-text);
+      border: 1px solid var(--clear-border);
+    }
+    .btn-chip.clear:hover { background: var(--clear-hover); }
+
+    /* Formulario */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -425,7 +503,7 @@
     input:focus,
     textarea:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px var(--blue-soft);
+      box-shadow: 0 0 0 3px var(--blue-border);
     }
 
     textarea {
@@ -433,7 +511,7 @@
       height: 48px;
     }
 
-    /* Caja de prioridad con degradado ámbar */
+    /* Tarjeta de atención prioritaria */
     .priority-box {
       display: flex;
       align-items: center;
@@ -491,7 +569,7 @@
       color: #ffffff;
     }
 
-    /* Desglose compacto */
+    /* Resumen de cálculo */
     .calc-summary {
       background: var(--card-sub-grad);
       border: 1px solid var(--border);
@@ -515,19 +593,7 @@
       color: var(--green);
     }
 
-    /* Botones semánticos */
-    button {
-      font-family: inherit;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: filter 0.15s, transform 0.06s, background 0.15s;
-    }
-
-    button:active {
-      transform: scale(0.99);
-    }
-
+    /* Botones principales sólidos */
     .btn-primary-blue {
       width: 100%;
       padding: 10px 14px;
@@ -539,10 +605,10 @@
       box-shadow: 0 2px 8px rgba(43, 108, 176, 0.25);
     }
 
-    .btn-primary-blue:hover { filter: brightness(1.06); }
+    .btn-primary-blue:hover { filter: brightness(1.07); }
 
     .btn-primary-green {
-      padding: 8px 13px;
+      padding: 8px 14px;
       font-size: 0.84rem;
       background: var(--green-grad);
       color: #ffffff;
@@ -551,20 +617,7 @@
       box-shadow: 0 2px 6px rgba(22, 128, 92, 0.22);
     }
 
-    .btn-primary-green:hover { filter: brightness(1.06); }
-
-    .btn-neutral {
-      padding: 5px 9px;
-      font-size: 0.75rem;
-      background: var(--btn-neutral-bg);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-strong);
-    }
-
-    .btn-neutral:hover {
-      background: var(--btn-neutral-hover);
-      color: var(--text);
-    }
+    .btn-primary-green:hover { filter: brightness(1.07); }
 
     /* Buscador por ID */
     .search-row {
@@ -572,14 +625,14 @@
       gap: 8px;
     }
 
-    /* Lista de turnos con scroll interno */
+    /* Lista de turnos */
     .turnos-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
       max-height: 360px;
       overflow-y: auto;
-      padding-right: 2px;
+      padding-right: 3px;
     }
 
     .turno-card {
@@ -621,6 +674,7 @@
       font-weight: 700;
       background: var(--blue-soft);
       color: var(--blue);
+      border: 1px solid var(--blue-border);
       padding: 1px 6px;
       border-radius: 5px;
     }
@@ -633,7 +687,7 @@
     }
 
     .prio-badge.si { background: var(--amber-soft); color: var(--amber); border: 1px solid var(--amber-border); }
-    .prio-badge.no { background: var(--card-grad); color: var(--text-muted); border: 1px solid var(--border-strong); }
+    .prio-badge.no { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-border); }
 
     .turno-right {
       text-align: right;
@@ -649,7 +703,7 @@
     .turno-base {
       font-size: 0.7rem;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     .empty-state {
@@ -661,7 +715,7 @@
       font-size: 0.82rem;
     }
 
-    /* Inspector HTTP en columna 3 (siempre visible sin bajar) */
+    /* Inspector HTTP en columna 3 */
     .inspector-tabs {
       display: flex;
       gap: 6px;
@@ -701,7 +755,7 @@
       display: none;
     }
 
-    /* Simulador de errores compacto */
+    /* Simulador de errores */
     .error-stack {
       display: flex;
       flex-direction: column;
@@ -730,7 +784,7 @@
       display: block;
       font-weight: 400;
       font-size: 0.72rem;
-      opacity: 0.85;
+      opacity: 0.88;
     }
 
     .error-tag {
@@ -760,10 +814,13 @@
         <span class="meta-chip">N = 4 · Recargo 8%</span>
         <span class="meta-chip">Turnos: <strong id="statTotalTurnos">0</strong></span>
         <span class="meta-chip live"><span class="dot"></span>localhost:3000</span>
-        <button type="button" class="theme-toggle" id="btnTheme" title="Cambiar entre tema claro y oscuro">
-          <span id="themeIcon">🌙</span>
-          <span id="themeText">Tema oscuro</span>
-        </button>
+        <button
+          type="button"
+          class="theme-toggle"
+          id="btnTheme"
+          title="Cambiar tema"
+          aria-label="Cambiar tema"
+        >🌙</button>
       </div>
     </div>
   </header>
@@ -792,9 +849,9 @@
 
           <div class="quick-bar">
             <span class="quick-label">Ejemplos:</span>
-            <button type="button" class="btn-neutral" id="btnEjemploPrioritario">Prioritario ($100.000)</button>
-            <button type="button" class="btn-neutral" id="btnEjemploNormal">Normal ($80.000)</button>
-            <button type="button" class="btn-neutral" id="btnLimpiar">Limpiar</button>
+            <button type="button" class="btn-chip amber" id="btnEjemploPrioritario">⚡ Prioritario ($100.000)</button>
+            <button type="button" class="btn-chip blue" id="btnEjemploNormal">✓ Normal ($80.000)</button>
+            <button type="button" class="btn-chip clear" id="btnLimpiar">✕ Limpiar</button>
           </div>
 
           <form id="formTurno">
@@ -882,7 +939,7 @@
             </div>
             <div style="display:flex;align-items:center;gap:6px;">
               <span class="endpoint-chip get">GET /api/turnos</span>
-              <button type="button" class="btn-neutral" id="btnRefrescar">Actualizar</button>
+              <button type="button" class="btn-chip green" id="btnRefrescar">↻ Actualizar</button>
             </div>
           </div>
 
@@ -954,27 +1011,26 @@
     const PORCENTAJE_RECARGO = 8; // N = 4 -> 4 * 2 = 8%
 
     // =========================================================
-    // CONTROL DE TEMA CLARO / OSCURO
+    // CONTROL DE TEMA (SOLO ICONO 🌙 / ☀️)
     // =========================================================
     const htmlRoot = document.documentElement;
     const btnTheme = document.getElementById('btnTheme');
-    const themeIcon = document.getElementById('themeIcon');
-    const themeText = document.getElementById('themeText');
 
     function aplicarTema(tema) {
       htmlRoot.setAttribute('data-theme', tema);
       localStorage.setItem('tecnisystemas-theme', tema);
       if (tema === 'dark') {
-        themeIcon.textContent = '☀️';
-        themeText.textContent = 'Tema claro';
+        btnTheme.textContent = '☀️';
+        btnTheme.title = 'Cambiar a modo claro';
+        btnTheme.setAttribute('aria-label', 'Cambiar a modo claro');
       } else {
-        themeIcon.textContent = '🌙';
-        themeText.textContent = 'Tema oscuro';
+        btnTheme.textContent = '🌙';
+        btnTheme.title = 'Cambiar a modo oscuro';
+        btnTheme.setAttribute('aria-label', 'Cambiar a modo oscuro');
       }
     }
 
-    const temaGuardado = localStorage.getItem('tecnisystemas-theme') || 'light';
-    aplicarTema(temaGuardado);
+    aplicarTema(localStorage.getItem('tecnisystemas-theme') || 'light');
 
     btnTheme.addEventListener('click', () => {
       const actual = htmlRoot.getAttribute('data-theme');
@@ -1002,7 +1058,7 @@
     tabRequest.addEventListener('click', () => seleccionarTab('request'));
 
     // =========================================================
-    // ELEMENTOS DE LA INTERFAZ
+    // UTILIDADES Y ELEMENTOS
     // =========================================================
     const formTurno = document.getElementById('formTurno');
     const inputNombre = document.getElementById('nombreCliente');
@@ -1023,6 +1079,15 @@
     const feedbackBar = document.getElementById('feedbackBar');
     const feedbackText = document.getElementById('feedbackText');
     const feedbackBadge = document.getElementById('feedbackBadge');
+
+    function escaparHtml(texto) {
+      return String(texto)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
     function establecerFechaPorDefecto() {
       const manana = new Date();
@@ -1108,18 +1173,18 @@
         <div class="turno-card">
           <div class="turno-info">
             <h4>
-              <span class="id-badge">#${t.id}</span>
-              ${t.nombreCliente}
+              <span class="id-badge">#${escaparHtml(t.id)}</span>
+              ${escaparHtml(t.nombreCliente)}
               <span class="prio-badge ${t.prioritario ? 'si' : 'no'}">
-                ${t.prioritario ? `Prioritario +${t.porcentajeRecargo}%` : 'Normal'}
+                ${t.prioritario ? `⚡ Prioritario +${t.porcentajeRecargo}%` : 'Normal'}
               </span>
             </h4>
-            <p>${t.tipoServicio} · ${t.fechaHora.replace('T', ' ')}</p>
+            <p>${escaparHtml(t.tipoServicio)} · ${escaparHtml(String(t.fechaHora).replace('T', ' '))}</p>
           </div>
           <div class="turno-right">
             <div class="turno-total">${formatearMoneda(t.totalPagar)}</div>
             <div class="turno-base">Base: ${formatearMoneda(t.precioBase)}</div>
-            <button type="button" class="btn-neutral" onclick="consultarPorId(${t.id})">Ver detalle</button>
+            <button type="button" class="btn-chip green" onclick="consultarPorId(${Number(t.id)})">Ver detalle</button>
           </div>
         </div>
       `).join('');
@@ -1159,7 +1224,7 @@
           true,
           status,
           statusText,
-          `Turno <strong>#${data.id}</strong> encontrado: <strong>${data.nombreCliente}</strong> — Total: <strong>${formatearMoneda(data.totalPagar)}</strong>.`,
+          `Turno <strong>#${escaparHtml(data.id)}</strong> encontrado: <strong>${escaparHtml(data.nombreCliente)}</strong> — Total: <strong>${formatearMoneda(data.totalPagar)}</strong>.`,
           'GET',
           url,
           undefined,
@@ -1170,7 +1235,7 @@
           false,
           status,
           statusText,
-          `El servidor respondió <strong>404 Not Found</strong>: "${data.error || 'Registro no encontrado'}".`,
+          `El servidor respondió <strong>404 Not Found</strong>: "${escaparHtml(data.error || 'Registro no encontrado')}".`,
           'GET',
           url,
           undefined,
@@ -1199,7 +1264,7 @@
           true,
           status,
           statusText,
-          `Turno <strong>#${data.id}</strong> creado para <strong>${data.nombreCliente}</strong> · Total: <strong>${formatearMoneda(data.totalPagar)}</strong> (${data.prioritario ? `recargo ${data.porcentajeRecargo}%` : 'sin recargo'}).`,
+          `Turno <strong>#${escaparHtml(data.id)}</strong> creado para <strong>${escaparHtml(data.nombreCliente)}</strong> · Total: <strong>${formatearMoneda(data.totalPagar)}</strong> (${data.prioritario ? `recargo ${data.porcentajeRecargo}%` : 'sin recargo'}).`,
           'POST',
           '/api/turnos',
           payload,
@@ -1211,7 +1276,7 @@
           false,
           status,
           statusText,
-          `Solicitud rechazada (<strong>${status}</strong>): "${data.error || 'Datos inválidos'}".`,
+          `Solicitud rechazada (<strong>${status}</strong>): "${escaparHtml(data.error || 'Datos inválidos')}".`,
           'POST',
           '/api/turnos',
           payload,
@@ -1259,7 +1324,7 @@
         false,
         status,
         statusText,
-        `Validación correcta (<strong>400 Bad Request</strong>): "${data.error}".`,
+        `Validación correcta (<strong>400 Bad Request</strong>): "${escaparHtml(data.error)}".`,
         'POST',
         '/api/turnos',
         payload,
@@ -1278,7 +1343,7 @@
         false,
         status,
         statusText,
-        `Validación correcta (<strong>400 Bad Request</strong>): "${data.error}".`,
+        `Validación correcta (<strong>400 Bad Request</strong>): "${escaparHtml(data.error)}".`,
         'POST',
         '/api/turnos',
         payload,
