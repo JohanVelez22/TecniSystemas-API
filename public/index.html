@@ -135,10 +135,19 @@
       background: var(--bg-grad);
       color: var(--text);
       line-height: 1.4;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    @media (max-width: 1140px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+      }
     }
 
     /* Barra superior */
@@ -258,11 +267,12 @@
       max-width: 1440px;
       width: 100%;
       margin: 0 auto;
-      padding: 12px 16px 16px;
+      padding: 12px 16px 14px;
       flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     /* Banner compacto de feedback */
@@ -316,18 +326,20 @@
       color: #ffffff;
     }
 
-    /* Grid de 3 columnas balanceadas */
+    /* Grid de 3 columnas balanceadas dentro del viewport */
     .bento-grid {
       display: grid;
-      grid-template-columns: 1.08fr 0.94fr 0.98fr;
+      grid-template-columns: 1.06fr 0.96fr 0.98fr;
       gap: 12px;
       align-items: stretch;
       flex: 1;
+      min-height: 0;
     }
 
     @media (max-width: 1140px) {
       .bento-grid {
         grid-template-columns: 1fr 1fr;
+        flex: none;
       }
     }
 
@@ -342,20 +354,28 @@
       flex-direction: column;
       gap: 12px;
       min-width: 0;
+      min-height: 0;
     }
 
     .card {
       background: var(--card-grad);
       border: 1px solid var(--border);
       border-radius: 13px;
-      padding: 14px 15px;
+      padding: 13px 15px;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
+      min-height: 0;
     }
 
     .card.grow {
       flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .card.form-card {
+      overflow-y: auto;
     }
 
     .card-header {
@@ -664,25 +684,27 @@
       gap: 6px;
     }
 
-    /* Lista de turnos */
+    /* Lista de turnos ocupando TODO el alto disponible (~6 tarjetas visibles antes del scroll) */
     .turnos-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      max-height: 365px;
+      gap: 7px;
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
-      padding-right: 3px;
+      padding-right: 4px;
     }
 
     .turno-card {
       background: var(--card-sub-grad);
       border: 1px solid var(--border);
       border-radius: 9px;
-      padding: 9px 11px;
+      padding: 8px 11px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      flex-shrink: 0;
     }
 
     .turno-info {
@@ -754,19 +776,26 @@
       font-size: 0.82rem;
     }
 
-    /* Columna 3: Inspector HTTP Dual (Petición + Respuesta visibles al mismo tiempo) */
+    /* Columna 3: Inspector HTTP Dual (34% Request + 66% Response SIEMPRE visibles) */
     .inspector-section {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: 34% minmax(0, 1fr);
       flex: 1;
+      min-height: 0;
       gap: 10px;
+    }
+
+    @media (max-width: 1140px) {
+      .inspector-section {
+        grid-template-rows: 210px 320px;
+      }
     }
 
     .inspector-pane {
       display: flex;
       flex-direction: column;
-      flex: 1;
       min-height: 0;
+      overflow: hidden;
     }
 
     .pane-header {
@@ -774,10 +803,11 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 5px;
+      flex-shrink: 0;
     }
 
     .pane-label {
-      font-size: 0.73rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -799,8 +829,8 @@
       font-size: 0.76rem;
       color: var(--code-text);
       overflow: auto;
-      height: 190px;
       flex: 1;
+      min-height: 0;
       white-space: pre-wrap;
       word-break: break-word;
     }
@@ -848,7 +878,7 @@
     <div class="bento-grid">
       <!-- COLUMNA 1: CREAR TURNO + ESCENARIOS DE PRUEBA (VÁLIDOS Y ERRORES 400) -->
       <div class="col">
-        <section class="card grow">
+        <section class="card grow form-card">
           <div class="card-header">
             <div class="step-title">
               <span class="step-num blue">1</span>
