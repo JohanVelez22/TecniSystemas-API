@@ -216,19 +216,31 @@
     .meta-chip {
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 5px 10px;
+      padding: 5px 11px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.09);
       border: 1px solid rgba(255, 255, 255, 0.14);
       color: #e2ecf8;
-    }
-
-    .meta-chip.live {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .meta-chip.rule {
+      background: rgba(234, 176, 74, 0.16);
+      border-color: rgba(234, 176, 74, 0.42);
+      color: #f6ce7d;
+    }
+
+    .meta-chip.count {
+      background: rgba(91, 156, 240, 0.16);
+      border-color: rgba(91, 156, 240, 0.42);
+      color: #a3c9fa;
+    }
+
+    .meta-chip.live {
       background: rgba(56, 184, 137, 0.16);
-      border-color: rgba(56, 184, 137, 0.38);
+      border-color: rgba(56, 184, 137, 0.4);
       color: #8ee6c5;
     }
 
@@ -684,17 +696,16 @@
       gap: 6px;
     }
 
-    /* Lista exacta para 6 tarjetas completas (6 * 76px + 5 * 8px = 496px) sin recortar la #7 */
+    /* Lista ajustada dinámicamente a un número exacto de tarjetas completas (máx. 6) */
     .turnos-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      flex: 0 1 496px;
+      flex: 0 0 auto;
       max-height: 496px;
-      min-height: 0;
       overflow-y: auto;
       padding-right: 4px;
-      scroll-snap-type: y proximity;
+      scroll-snap-type: y mandatory;
     }
 
     .turno-card {
@@ -703,6 +714,8 @@
       border-radius: 9px;
       padding: 8px 11px;
       height: 76px;
+      min-height: 76px;
+      max-height: 76px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -855,8 +868,8 @@
       </div>
 
       <div class="topbar-meta">
-        <span class="meta-chip">N = 4 · Recargo 8%</span>
-        <span class="meta-chip">Turnos: <strong id="statTotalTurnos">0</strong></span>
+        <span class="meta-chip rule">N = 4 · Recargo 8%</span>
+        <span class="meta-chip count">Turnos: <strong id="statTotalTurnos">0</strong></span>
         <span class="meta-chip live"><span class="dot"></span>localhost:3000</span>
         <button
           type="button"
@@ -1436,9 +1449,43 @@
     });
     inputPrioritario.addEventListener('change', actualizarCalculo);
 
+    // Ajuste matemático exacto del alto de la lista para mostrar solo tarjetas completas (máx. 6)
+    const CARD_HEIGHT = 76;
+    const CARD_GAP = 8;
+    const MAX_CARDS_VISIBLES = 6;
+    const cardListaTurnos = listaTurnos.closest('.card');
+
+    function ajustarAlturaExactaLista() {
+      if (!cardListaTurnos) return;
+      const estilosCard = getComputedStyle(cardListaTurnos);
+      const paddingVertical = parseFloat(estilosCard.paddingTop) + parseFloat(estilosCard.paddingBottom);
+      const headerCard = cardListaTurnos.querySelector('.card-header');
+      const headerAlto = headerCard
+        ? headerCard.offsetHeight + parseFloat(getComputedStyle(headerCard).marginBottom)
+        : 45;
+
+      const espacioDisponible = cardListaTurnos.clientHeight - paddingVertical - headerAlto;
+      if (espacioDisponible <= 0) return;
+
+      const cantidadExacta = Math.min(
+        MAX_CARDS_VISIBLES,
+        Math.max(2, Math.floor((espacioDisponible + CARD_GAP) / (CARD_HEIGHT + CARD_GAP)))
+      );
+      const alturaExacta = cantidadExacta * CARD_HEIGHT + (cantidadExacta - 1) * CARD_GAP;
+      listaTurnos.style.height = `${alturaExacta}px`;
+      listaTurnos.style.maxHeight = `${alturaExacta}px`;
+    }
+
+    if (typeof ResizeObserver !== 'undefined' && cardListaTurnos) {
+      new ResizeObserver(ajustarAlturaExactaLista).observe(cardListaTurnos);
+    }
+    window.addEventListener('resize', ajustarAlturaExactaLista);
+
     establecerFechaPorDefecto();
     actualizarCalculo();
+    ajustarAlturaExactaLista();
     cargarTurnos(false).then(() => {
+      ajustarAlturaExactaLista();
       inspectorRequest.textContent = 'Esperando una acción (POST /api/turnos o GET /api/turnos/:id)';
       inspectorResponse.textContent = '{\n  "info": "Registra un turno o haz clic en Ver detalle para inspeccionar su JSON"\n}';
     });
