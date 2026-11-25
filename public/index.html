@@ -684,15 +684,17 @@
       gap: 6px;
     }
 
-    /* Lista de turnos ocupando TODO el alto disponible (~6 tarjetas visibles antes del scroll) */
+    /* Lista exacta para 6 tarjetas completas (6 * 76px + 5 * 8px = 496px) sin recortar la #7 */
     .turnos-list {
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      flex: 1;
+      gap: 8px;
+      flex: 0 1 496px;
+      max-height: 496px;
       min-height: 0;
       overflow-y: auto;
       padding-right: 4px;
+      scroll-snap-type: y proximity;
     }
 
     .turno-card {
@@ -700,11 +702,13 @@
       border: 1px solid var(--border);
       border-radius: 9px;
       padding: 8px 11px;
+      height: 76px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
       flex-shrink: 0;
+      scroll-snap-align: start;
     }
 
     .turno-info {
