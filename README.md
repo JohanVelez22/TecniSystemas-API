@@ -99,7 +99,6 @@ Proyecto API REST/
 │   └── turnos.test.js
 └── docs/
     ├── guia-usuario.md
-    ├── guia-sustentacion.md
     └── evidencias-pruebas.md
 ```
 
@@ -257,5 +256,4 @@ Proyecto API REST/
 ## 8. Documentación Adicional
 
 - [Guía de usuario](docs/guia-usuario.md)
-- [Guía de sustentación](docs/guia-sustentacion.md)
 - [Evidencias de pruebas](docs/evidencias-pruebas.md)
