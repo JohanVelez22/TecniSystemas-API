@@ -18,5 +18,4 @@ tmp/
 # Archivos locales del enunciado o datos temporales de prueba
 *.pdf
 data/turnos.test.json
-docs/guia-sustentacion.md
 
